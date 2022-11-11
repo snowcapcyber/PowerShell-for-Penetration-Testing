@@ -4,9 +4,27 @@ Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Pene
 
 ## Chapter 1 - Port Scanning Tool
 
-We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses.
+We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses. When using Test-Connection we can use and DNS name or an IP address as shown below.
 ```bash
-PS C:\> Test-Connection 8.8.8.8
+PS C:\> Test-Connection www.google.com
+
+Source        Destination     IPV4Address      IPV6Address                              Bytes    Time(ms)
+------        -----------     -----------      -----------                              -----    --------
+DESKTOP-01    www.google.com  142.250.200.4                                             32       14
+DESKTOP-01    www.google.com  142.250.200.4                                             32       12
+DESKTOP-01    www.google.com  142.250.200.4                                             32       15
+DESKTOP-01    www.google.com  142.250.200.4                                             32       14
+
+PS C:\> Test-Connection 142.250.200.4
+
+Source        Destination     IPV4Address      IPV6Address                              Bytes    Time(ms)
+------        -----------     -----------      -----------                              -----    --------
+DESKTOP-01    142.250.200.4   142.250.200.4                                             32       18
+DESKTOP-01    142.250.200.4   142.250.200.4                                             32       12
+DESKTOP-01    142.250.200.4   142.250.200.4                                             32       22
+DESKTOP-01    142.250.200.4   142.250.200.4                                             32       13
+
+PS C:\>
 ```
 
 We can also use the Test-Connection command to map out a network. To do this we make use of its TraceRoute functionality
