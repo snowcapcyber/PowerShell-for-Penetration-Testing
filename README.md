@@ -39,6 +39,11 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
 
+We can also use the HHH command to perform a test on a single port as follows:
+```bash
+PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
+```
+
 ## Recommended Reading
 
 * [Chris Dent, Mastering PowerShell Scripting: Automate and manage your environment using PowerShell 7.1, Packt, 2021](https://www.amazon.co.uk/Mastering-PowerShell-Scripting-Automate-environment/dp/1800206542/ref=sr_1_4?crid=JF1OK6S95NY2&keywords=powershell&qid=1668186716&s=books&sprefix=powershell%2Cstripbooks%2C64&sr=1-4)
