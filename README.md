@@ -4,7 +4,32 @@ Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Pene
 
 ## Chapter 1 - Port Scanning Tool
 
-There are a number of port scanning tools for TCP and UDP that we can access via GitHub.
+We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses.
+```bash
+PS C:\> Test-Connection 8.8.8.8
+```
+
+We can also use the Test-Connection command to map out a network. To do this we make use of its TraceRoute functionality
+```bash
+PS C:\> Test-NetConnection 1.1.1.1 -TraceRoute
+
+ComputerName           : 1.1.1.1
+RemoteAddress          : 1.1.1.1
+InterfaceAlias         : WLAN
+SourceAddress          : 192.168.1.3
+PingSucceeded          : True
+PingReplyDetails (RTT) : 5 ms
+TraceRoute             : 192.168.1.1
+                         85.7.42.1
+                         193.134.95.170
+                         138.187.131.211
+                         138.187.129.97
+                         1.1.1.1
+```
+
+## Chapter 2 - Port Scanning Tool
+
+The trick when creating and using tools for Penetration Testing is not to reinvent the year. There are a number of port scanning tools for TCP and UDP that we can access via GitHub.
 
 * [PowerShell IPv4 Port Scanner](https://github.com/BornToBeRoot/PowerShell_IPv4PortScanner)
 
