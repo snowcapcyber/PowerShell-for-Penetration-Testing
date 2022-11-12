@@ -15,7 +15,7 @@ As a scripting language it can be enabled or disabled.
 ## Chapter 2 - Network Mapping
 
 We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses. When using Test-Connection we can use and DNS name or an IP address as shown below.
-```bash
+```powershell
 PS C:\> Test-Connection www.google.com
 
 Source        Destination     IPV4Address      IPV6Address                              Bytes    Time(ms)
@@ -37,7 +37,7 @@ DESKTOP-01    142.250.200.4   142.250.200.4                                     
 PS C:\>
 ```
 If a machine can not be reached via ICMP ping then Test-Connection will return an error message. We can also use the Test-Connection command to map out a network. To do this we make use of its TraceRoute functionality
-```bash
+```powershell
 PS C:\> Test-NetConnection 1.1.1.1 -TraceRoute
 
 ComputerName           : 1.1.1.1
@@ -67,11 +67,11 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
 
 We can also use the HHH command to perform a test on a single port as follows:
-```bash
+```powershell
 PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
 ```
 Because we can use Test-Connection to test that a TCP port is open, when we can write a simple scripted to test every port in a list. It is important to note that this technique is not fast compares with tools such as NMAP.
-```bash
+```powershell
 $ipaddress = 192.168.2.11
 for()
 {
@@ -81,7 +81,7 @@ for()
 
 Rather than port scan one IP address at a time write a PowerShell application that will read DNS name and IP addresses from a file and and then scan a set of TCP ports from a file.
 
-```bash
+```powershell
 $HOSTFILE = Get-Content "C:\HOSTS.txt"
 $PORTFILE = Get-Content "C:\PORTS.txt"
 foreach ($HOSTLINE in $HOSTFILE)
@@ -102,7 +102,7 @@ Once we have mapped out the structure and topology of a network the next stage i
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. To start with we identify the SID of a user. The SID of a user allows us to identify the RID and Domain SID.
 
-```bash
+```powershell
 $username='ajcblyth'
 $user = New-Object System.Security.Principal.NTAccount($username)
 $sid = $user.Translate([System.Security.Principal.SecurityIdentifier])
@@ -111,12 +111,12 @@ $sid.Value
 
 The above PowerShell gives us the following.
 
-```bash
+```powershell
 S-1-5-21-5082059827-597078506-5194163137-1011
 ```
 
 Once we have identified a SID for a given domain then we can start to use it to identify other users within a domain.
-```bash
+```powershell
 $sid='S-1-5-21-5082059827-597078506-5194163137-1025'
 $osid = New-Object System.Security.Principal.SecurityIdentifier($sid)
 $user = $osid.Translate( [System.Security.Principal.NTAccount])
@@ -124,18 +124,18 @@ $user.Value
 ```
 
 The above script will profile the following output.
-```bash
+```powershell
 SNOWCAPCYBER\Julian
 ```
 
 Because PowerShell is a scripting language it support a set of commands designed to allow for system administration.  Once of these commands will allow is to query an Active Directory and get a user's SID. In the following we will use the Get-ADUser command.
 
-```bash
+```powershell
 Get-ADUser -Identity 'ajcblyth' | select SID
 ```
 
 The above script will allow us to identify the SID associated with the username ajcblyth. It will produce the following output.
-```bash
+```powershell
 SID
 ---
 S-1-5-21-1528183062-2169693211-1356664787-1205
