@@ -94,9 +94,52 @@ foreach ($HOSTLINE in $HOSTFILE)
 }
 ```
 
-## Chapter 3 - Banner Grabbing
+## Chapter 4 - Banner Grabbing
 
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  
+
+## Chapter 5 - Banner Grabbing
+
+Once we have exploited a system we start to profile a system using a set of PowerShell commands. To start with we identify the SID of a user. The SID of a user allows us to identify the RID and Domain SID.
+
+```bash
+$username='ajcblyth'
+$user = New-Object System.Security.Principal.NTAccount($username)
+$sid = $user.Translate([System.Security.Principal.SecurityIdentifier])
+$sid.Value
+```
+
+The above PowerShell gives us the following.
+
+```bash
+S-1-5-21-5082059827-597078506-5194163137-1011
+```
+
+Once we have identified a SID for a given domain then we can start to use it to identify other users within a domain.
+```bash
+$sid='S-1-5-21-5082059827-597078506-5194163137-1025'
+$osid = New-Object System.Security.Principal.SecurityIdentifier($sid)
+$user = $osid.Translate( [System.Security.Principal.NTAccount])
+$user.Value
+```
+
+The above script will profile the following output.
+```bash
+SNOWCAPCYBER\Julian
+```
+
+Because PowerShell is a scripting language it support a set of commands designed to allow for system administration.  Once of these commands will allow is to query an Active Directory and get a user's SID. In the following we will use the Get-ADUser command.
+
+```bash
+Get-ADUser -Identity 'ajcblyth' | select SID
+```
+
+The above script will allow us to identify the SID associated with the username ajcblyth. It will produce the following output.
+```bash
+SID
+---
+S-1-5-21-1528183062-2169693211-1356664787-1205
+```
 
 ## Recommended Reading
 
