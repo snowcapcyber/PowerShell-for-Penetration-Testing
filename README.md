@@ -73,7 +73,7 @@ PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
 Because we can use Test-Connection to test that a TCP port is open, when we can write a simple scripted to test every port in a list. It is important to note that this technique is not fast compares with tools such as NMAP.
 ```powershell
 $ipaddress = 192.168.2.11
-for()
+for ($counter=1; $counter -le 65535 ; $counter++)
 {
   Test-Connection -TargetName 192.168.2.11 -TcpPort $counter
 }
@@ -98,7 +98,7 @@ foreach ($HOSTLINE in $HOSTFILE)
 
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  
 
-## Chapter 5 - Banner Grabbing
+## Chapter 5 - User Profiling
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. To start with we identify the SID of a user. The SID of a user allows us to identify the RID and Domain SID.
 
@@ -139,6 +139,17 @@ The above script will allow us to identify the SID associated with the username 
 SID
 ---
 S-1-5-21-1528183062-2169693211-1356664787-1205
+```
+
+Once we know the SID for the Domain we can then start to cycle through the SID and query every SID in the domain. To do this we make use of a for loop and function that allows us to query the Domain for a given SID. This is shown as follows
+```powershell
+for ($counter=1; $counter -le 65535 ; $counter++)
+{
+  $sid = 'S-1-5-21-1528183062-2169693211-1356664787-'+$counter
+  $osid = new-object System.Security.Principal.SecurityIdentifier($sid)
+  $user = $osid.Translate([System.Security.Principal.NTAccount])
+  $user.value
+}
 ```
 
 ## Recommended Reading
