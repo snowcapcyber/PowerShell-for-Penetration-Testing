@@ -2,7 +2,17 @@
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network and the systems associated with it.
 
-## Chapter 1 - Port Scanning Tool
+## Chapter 1 - Introducing PowerShell
+
+PowerShell is a scripting language that has been ported to a number of platforms such as  Microsoft Windows, Linux and Mac OS. Information and resources on how to use and program in PowerShell can be found at the following:
+
+* [PowerShell Documentation](https://learn.microsoft.com/en-us/powershell/)
+
+* [PowerShell on GitHub](https://github.com/PowerShell/PowerShell)
+
+As a scripting language it can be enabled or disabled.
+
+## Chapter 2 - Network Mapping
 
 We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses. When using Test-Connection we can use and DNS name or an IP address as shown below.
 ```bash
@@ -26,8 +36,7 @@ DESKTOP-01    142.250.200.4   142.250.200.4                                     
 
 PS C:\>
 ```
-
-We can also use the Test-Connection command to map out a network. To do this we make use of its TraceRoute functionality
+If a machine can not be reached via ICMP ping then Test-Connection will return an error message. We can also use the Test-Connection command to map out a network. To do this we make use of its TraceRoute functionality
 ```bash
 PS C:\> Test-NetConnection 1.1.1.1 -TraceRoute
 
@@ -45,7 +54,7 @@ TraceRoute             : 192.168.1.1
                          1.1.1.1
 ```
 
-## Chapter 2 - Port Scanning Tool
+## Chapter 3 - Port Scanning Tool
 
 The trick when creating and using tools for Penetration Testing is not to reinvent the year. There are a number of port scanning tools for TCP and UDP that we can access via GitHub.
 
@@ -61,6 +70,33 @@ We can also use the HHH command to perform a test on a single port as follows:
 ```bash
 PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
 ```
+Because we can use Test-Connection to test that a TCP port is open, when we can write a simple scripted to test every port in a list. It is important to note that this technique is not fast compares with tools such as NMAP.
+```bash
+$ipaddress = 192.168.2.11
+for()
+{
+  Test-Connection -TargetName 192.168.2.11 -TcpPort $counter
+}
+```
+
+Rather than port scan one IP address at a time write a PowerShell application that will read DNS name and IP addresses from a file and and then scan a set of TCP ports from a file.
+
+```bash
+$HOSTFILE = Get-Content "C:\HOSTS.txt"
+$PORTFILE = Get-Content "C:\PORTS.txt"
+foreach ($HOSTLINE in $HOSTFILE)
+  {
+    foreach ($PORTLINE in $PORTFILE)
+    {
+      $STATUS=(New-Object System.Net.Sockets.TcpClient).ConnectAsync($HOSTLINE, $PORTLINE).Wait(1000)
+      Write-Output "$HOSTLINE, $PORTLINE, Status: $STATUS"
+    }
+}
+```
+
+## Chapter 3 - Banner Grabbing
+
+Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  
 
 ## Recommended Reading
 
