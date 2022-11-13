@@ -96,9 +96,35 @@ foreach ($HOSTLINE in $HOSTFILE)
 
 ## Chapter 4 - Banner Grabbing
 
-Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  
+Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports.
 
-Once we have identified the ports that are open we can make use of a REST API to identify the IP Address of a target machine. To achieve this we make use of the following
+We can use the Invoke-WebRequest command to get the version information associated with a Web Server.
+```powershell
+$url = 'https://www.snowcapcyber.com'
+$result = Invoke-WebRequest -Method GET -Uri $url -UseBasicParsing
+$result.RawContent
+```
+
+The above PowerShell defines a URL and then uses the Invoke-WebRequest command to execute the GET HTTP verb on the Server. It should be noted that this command will allow us to execute a other HTTP verbs.
+```powershell
+HTTP/1.1 200 OK
+Link: <https://www.snowcapcyber.com/wp-json/>; rel="https://api.org/", <https://www.snowcapcyber.com/wp-json/wp/v2/pages/11822>; rel="alternate"; type="application/json", <https://www.snowcapcyber.com/>; rel=shortlink, <https://www.snowcapcyber.com/wp-json/>; rel="https://api.org/", <https://www.snowcapcyber.com/wp-json/wp/v2/pages/11822>; rel="alternate"; type="application/json", <https://www.snowcapcyber.com/>; rel=shortlink
+Pragma: public
+Strict-Transport-Security: max-age=63072000; includeSubdomains;
+Upgrade: h2
+Connection: Upgrade
+Access-Control-Allow-Origin: *
+Cache-Control: max-age=0, public
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 20 Feb 2021 16:08:24 GMT
+Expires: Sat, 20 Feb 2021 14:06:05 GMT
+ETag: "b952b112b53c6a67782fff33f7ab4e37"
+Last-Modified: Sat, 20 Feb 2021 13:06:05 GMT
+Server: Apache/2.4.29 (Ubuntu)
+X-Powered-By: W3 Total Cache/2.1.0258=
+```
+
+Analysis of the above allows us to identify the server type and version number. This can then be used to identify potential vulnerabilities. Once we have identified the ports that are open we can make use of a REST API to identify the IP Address of a target machine. To achieve this we make use of the following
 ```powershell
 PS C:\> Invoke-RestMethod -Uri https://snowcapcyber.com
 ip       : 18.193.36.153
@@ -190,7 +216,16 @@ User        WIN11\jsmith         Local
 
 ## Chapter 6 - System Profiling
 
-Profiling a target system starts with us identifying the TCP and UDP ports that are being used. To identify all TCP ports that are being used we can use the  Get-NetTCPConnection PowerShell command as follows.
+Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
+```powershell
+PS C:\>  Get-ExecutionPolicy
+```
+If you wish to change the PowerShell policy only to the current user, use the following command instead.
+```powershell
+PS C:\>  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+```
+
+Profiling the target system continues with us identifying the TCP and UDP ports that are being used. To identify all TCP ports that are being used we can use the  Get-NetTCPConnection PowerShell command as follows.
 ```powershell
 PS C:\>  Get-NetTCPConnection
 LocalAddress     LocalPort RemoteAddress   RemotePort State       AppliedSetting
@@ -241,6 +276,32 @@ LocalAddress   LocalPort
 0.0.0.0        5355
 0.0.0.0        5353
 ```
+
+Once we have identified the TCP and UDP that are being used by the target system the next stage is to profile the services that are running. To achieve this we will use the Get-Service command.
+```powershell
+PS C:\> Get-Service
+
+Status   Name               DisplayName
+------   ----               -----------
+Stopped  AarSvc_be149       Agent Activation Runtime_be149
+Running  AdobeARMservice    Adobe Acrobat Update Service
+```
+
+Once we have a list of all process on the target system we can filter the output and look for running process.
+```powershell
+PS C:\> get-service | where-object {$_.Status -eq "Running"}
+
+Status   Name               DisplayName
+------   ----               -----------
+Running  AdobeARMservice    Adobe Acrobat Update Service
+Running  Appinfo            Application Information
+Running  AppXSvc            AppX Deployment Service (AppXSVC)
+Running  AudioEndpointBu... Windows Audio Endpoint Builder
+
+```
+
+The above will list all running processes on the target system.
+
 ## Recommended Reading
 
 * [Chris Dent, Mastering PowerShell Scripting: Automate and manage your environment using PowerShell 7.1, Packt, 2021](https://www.amazon.co.uk/Mastering-PowerShell-Scripting-Automate-environment/dp/1800206542/ref=sr_1_4?crid=JF1OK6S95NY2&keywords=powershell&qid=1668186716&s=books&sprefix=powershell%2Cstripbooks%2C64&sr=1-4)
