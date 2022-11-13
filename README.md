@@ -205,7 +205,7 @@ LocalAddress     LocalPort RemoteAddress   RemotePort State       AppliedSetting
 192.168.1.121    50409     14.18.226.52    443        Established Internet      
 ```
 
-We can also use the YYY command to identify all TCP ports in state listen.
+We can also use the Get-NetTCPConnection command to identify all TCP ports that are in state Listen.
 ```powershell
 PS C:\>  Get-NetTCPConnection - State Listen
 LocalAddress  LocalPort RemoteAddress RemotePort State       AppliedSetting
