@@ -142,18 +142,46 @@ readme   : https://snowcapcyber.com
 
 ## Chapter 5 - User Profiling
 
-Once we have exploited a system we start to profile a system using a set of PowerShell commands. To start with we identify the SID of a user. The SID of a user allows us to identify the RID and Domain SID.
-
+Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
-$username='ajcblyth'
-$user = New-Object System.Security.Principal.NTAccount($username)
-$sid = $user.Translate([System.Security.Principal.SecurityIdentifier])
-$sid.Value
+PS C:\> get-localuser
+Name               Enabled Description
+----               ------- -----------
+Administrator      False   Built-in account for administering the computer/domain
+andre              True
+Andrew Blyth       True
+DefaultAccount     False   A user account managed by the system.
+Guest              False   Built-in account for guest access to the computer/domain
+WDAGUtilityAccount False   A user account managed and used by the system for Windows
 ```
 
-The above PowerShell gives us the following.
+Now that we have a list of users we profile a given user in greater detail. To achieve this we use the JJJ command and specify the username that we are interested in.
+```powershell
+PS C:\> get-localuser -name "Andrew Blyth" | select *
+AccountExpires         :
+Description            :
+Enabled                : True
+FullName               :
+PasswordChangeableDate : 02/07/2022 21:09:44
+PasswordExpires        :
+UserMayChangePassword  : True
+PasswordRequired       : False
+PasswordLastSet        : 02/07/2022 21:09:44
+LastLogon              : 19/08/2022 17:14:13
+Name                   : Andrew Blyth
+SID                    : S-1-5-21-5082059827-597078506-5194163137-1011
+PrincipalSource        : Local
+ObjectClass            : User
+```
+
+Our next step is to identify the SID associated with a specific user.. The SID of a user allows us to identify the RID and Domain SID.
 
 ```powershell
+PS C:\> $username='ajcblyth'
+PS C:\> $user = New-Object System.Security.Principal.NTAccount($username)
+PS C:\> $sid = $user.Translate([System.Security.Principal.SecurityIdentifier])
+PS C:\> $sid.Value
+
 S-1-5-21-5082059827-597078506-5194163137-1011
 ```
 
@@ -214,7 +242,7 @@ User        WIN11\Administrator  Local
 User        WIN11\jsmith         Local
 ```
 
-## Chapter 6 - System Profiling
+## Chapter 6 - Profiling Local/Remote Systems
 
 Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
 ```powershell
@@ -300,7 +328,43 @@ Running  AudioEndpointBu... Windows Audio Endpoint Builder
 
 ```
 
-The above will list all running processes on the target system.
+The above will list all running processes on the target system. Now that we have an understanding of the process that are running and usernames on the target system we can begin to examine other aspects such as the SMB shares exported. To identify the list of SMB shares we can use the Get-SMBShare command.
+```powershell
+PS C:> Get-SMBShare
+Name   ScopeName Path       Description
+----   --------- ----       -----------
+ADMIN$ *         C:\Windows Remote Admin
+C$     *         C:\        Default share
+D$     *         D:\        Default share
+E$     *         E:\        Default share
+IPC$   *                    Remote IPC
+```
+
+Once we have a list of export SMB shares we can profile the access rights on the target system via the JJJ command. Using the HHH command we specify the name of the share that we wish profile.
+```powershell
+PS C:\> Get-SmbShareAccess -Name C$
+
+Name     ScopeName AccountName               AccessControlType AccessRight
+----     --------- -----------               ----------------- -----------
+C$       *         BUILTIN\Administrators    Allow             Full
+C$       *         NT AUTHORITY\INTERACTIVE  Allow             Full
+```
+
+We can make create a new CimSession and the use this as a parameter to the Get-SmbShare command to query the SMB shares on the remote system. This is illustrate as follows
+```powershell
+$sessionDC01 = New-CimSession -ComputerName dc01.snowcapcyber.com
+Get-SmbShare -CimSession $sessionDC01
+```
+
+We can also use the Invoke-Command PowerShell command to profile the SMB shares exported by other target systems connected to the network. We achieve this via using the ability of PowerShell to connect to other systems and execute remote commands.
+```powershell
+PS C:\> Invoke-Command -ComputerName 'dc01.snowcapcyber.com' -ScriptBlock {Get-SmbShare}
+```
+
+We can achieve the same results using the WmiObject interface as follows:
+```powershell
+PS C:\> Get-WmiObject -Class Win32_Share -ComputerName DC01
+```
 
 ## Recommended Reading
 
