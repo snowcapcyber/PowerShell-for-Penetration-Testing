@@ -98,6 +98,22 @@ foreach ($HOSTLINE in $HOSTFILE)
 
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  
 
+Once we have identified the ports that are open we can make use of a REST API to identify the IP Address of a target machine. To achieve this we make use of the following
+```powershell
+PS C:\> Invoke-RestMethod -Uri https://snowcapcyber.com
+ip       : 18.193.36.153
+hostname : d1-hitch-eu-nlb-e064e2845fd0c838.elb.eu-central-1.amazonaws.com
+city     : Droitwich
+region   : Droitwich
+country  : UK
+loc      : 52.2616° N, 2.1526° W
+org      : Amazon Technologies Inc. (AT-88-Z)
+postal   : WR9 9AY
+timezone : Europe/London
+readme   : https://snowcapcyber.com
+
+```
+
 ## Chapter 5 - User Profiling
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. To start with we identify the SID of a user. The SID of a user allows us to identify the RID and Domain SID.
@@ -131,7 +147,7 @@ SNOWCAPCYBER\Julian
 Because PowerShell is a scripting language it support a set of commands designed to allow for system administration.  Once of these commands will allow is to query an Active Directory and get a user's SID. In the following we will use the Get-ADUser command.
 
 ```powershell
-Get-ADUser -Identity 'ajcblyth' | select SID
+PS C:\> Get-ADUser -Identity 'ajcblyth' | select SID
 ```
 
 The above script will allow us to identify the SID associated with the username ajcblyth. It will produce the following output.
@@ -152,6 +168,79 @@ for ($counter=1; $counter -le 65535 ; $counter++)
 }
 ```
 
+All of the above let us profile a users within a domain. Once we have profiled user we can look to create a user on the local system or on a Active Directory. In the following we will create a user on a local system. Once we have created a local account we can verify that we have been successful vi a the Get-LocalUser PowerShell command.
+```powershell
+PS C:\> $PASSWORD= ConvertTo-SecureString –AsPlainText -Force -String MyPa55w0rD
+PS C:\> New-LocalUser -Name "jsmith" -Description "John Smith" -Password $PASSWORD
+```
+
+Once we have created a local account the next thing that we want to do is to add the account to the local Administrator group. To do this we make use of the Add-LocalGroupMember command.
+```powershell
+PS C:\> Add-LocalGroupMember -Group "Administrators" -Member "jsmith"
+```
+
+Once we have created a new local account and added it to a group then we can check this as follows:
+```powershell
+PS C:\> Get-LocalGroupMember -Group "Administrators"
+ObjectClass Name                 PrincipalSource
+----------- ----                 ---------------
+User        WIN11\Administrator  Local
+User        WIN11\jsmith         Local
+```
+
+## Chapter 6 - System Profiling
+
+Profiling a target system starts with us identifying the TCP and UDP ports that are being used. To identify all TCP ports that are being used we can use the  Get-NetTCPConnection PowerShell command as follows.
+```powershell
+PS C:\>  Get-NetTCPConnection
+LocalAddress     LocalPort RemoteAddress   RemotePort State       AppliedSetting
+------------     --------- -------------   ---------- -----       --------------
+::               445       ::              0          Listen                    
+::               135       ::              0          Listen                    
+0.0.0.0          65144     0.0.0.0         0          Bound                     
+0.0.0.0          65051     0.0.0.0         0          Bound                     
+0.0.0.0          49301     0.0.0.0         0          Bound                     
+192.168.1.121    65144     21.58.222.106   443        CloseWait   Internet
+192.168.1.121    50577     5.32.165.224    3389       Established Internet
+192.168.1.121    50409     14.18.226.52    443        Established Internet      
+```
+
+We can also use the YYY command to identify all TCP ports in state listen.
+```powershell
+PS C:\>  Get-NetTCPConnection - State Listen
+LocalAddress  LocalPort RemoteAddress RemotePort State       AppliedSetting
+------------  --------- ------------- ---------- -----       --------------
+::            49669     ::            0          Listen                    
+0.0.0.0       49669     0.0.0.0       0          Listen                    
+0.0.0.0       912       0.0.0.0       0          Listen                    
+0.0.0.0       902       0.0.0.0       0          Listen                    
+0.0.0.0       135       0.0.0.0       0          Listen                    
+```
+
+We can also profile the UDP open ports that have connections to them as follows.
+```powershell
+PS C:\> Get-NetUDPEndpoint
+LocalAddress      LocalPort
+------------      ---------
+192.168.1.121     1900
+169.254.100.173   1900
+127.0.0.1         1900
+192.168.1.1       138
+192.168.1.1       137
+```
+
+Or we can list all the UDP ports in the listening state.
+
+```powershell
+PS C:\> Get-NetUDPEndpoint -LocalAddress 0.0.0.0
+LocalAddress   LocalPort
+------------   ---------
+0.0.0.0        60108
+0.0.0.0        60107
+0.0.0.0        54542
+0.0.0.0        5355
+0.0.0.0        5353
+```
 ## Recommended Reading
 
 * [Chris Dent, Mastering PowerShell Scripting: Automate and manage your environment using PowerShell 7.1, Packt, 2021](https://www.amazon.co.uk/Mastering-PowerShell-Scripting-Automate-environment/dp/1800206542/ref=sr_1_4?crid=JF1OK6S95NY2&keywords=powershell&qid=1668186716&s=books&sprefix=powershell%2Cstripbooks%2C64&sr=1-4)
