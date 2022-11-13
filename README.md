@@ -195,7 +195,7 @@ $user.Value
 
 The above script will profile the following output.
 ```powershell
-SNOWCAPCYBER\Julian
+SNOWCAPCYBER\isutherland
 ```
 
 Because PowerShell is a scripting language it support a set of commands designed to allow for system administration.  Once of these commands will allow is to query an Active Directory and get a user's SID. In the following we will use the Get-ADUser command.
@@ -326,6 +326,38 @@ Running  Appinfo            Application Information
 Running  AppXSvc            AppX Deployment Service (AppXSVC)
 Running  AudioEndpointBu... Windows Audio Endpoint Builder
 
+```
+
+Now that we now the services that are running we can gather information relating to the services such as the account under which the service is running and the location of the executable of the service, and the parameters used to invoke the service.
+```powershell
+PS C:\> Get-WmiObject win32_service | format-table -AutoSize Name, Startname, Startmode, PathName | Out-String -Width 4096
+
+Name      Startname                   Startmode PathName   
+----      ---------                   --------- --------   
+Dhcp      NT Authority\LocalService   Auto      C:\Windows\system32\svchost.exe -k LocalServiceNetworkRestricted -p      
+Dnscache  NT AUTHORITY\NetworkService Auto      C:\Windows\system32\svchost.exe -k NetworkService -p                     
+```
+
+We can further out understand of the services running my examining what services are making use of network ports to communicate with the outside world.
+```powershell
+PS C:\> Get-NetTCPConnection -State Listen |Select-Object -Property LocalPort, State, @{name='ProcessID';expression={(Get-Process -Id $_.OwningProcess). ID}}, @{name='ProcessName';expression={(Get-Process -Id $_.OwningProcess). Path}}
+
+LocalPort  State ProcessID ProcessName
+---------  ----- --------- -----------
+      135 Listen      1148 C:\Windows\system32\svchost.exe
+      912 Listen      3708 C:\Program Files (x86)\VMware\VMware Player\vmware-authd.exe
+      902 Listen      3708 C:\Program Files (x86)\VMware\VMware Player\vmware-authd.exe
+```
+
+We can expand upon this analysis to include the accounts under which the services ate executing
+```powershell
+PS C:\> Get-NetTCPConnection -State Listen |Select-Object -Property LocalPort, State, @{name='ProcessID';expression={(Get-Process -IncludeUserName -Id $_.OwningProcess). ID}}, @{name='ProcessName';expression={(Get-Process -IncludeUserName -Id $_.OwningProcess). Path}}, @{name='User';expression={(Get-Process -IncludeUserName -Id $_.OwningProcess). Username}}  | Format-Table -Property * -AutoSize | Out-String -Width 4096
+
+LocalPort  State ProcessID ProcessName                                                  User
+---------  ----- --------- -----------                                                  ----
+      135 Listen      1148 C:\Windows\system32\svchost.exe                              NT AUTHORITY\NETWORK SERVICE
+      912 Listen      3708 C:\Program Files (x86)\VMware\VMware Player\vmware-authd.exe NT AUTHORITY\SYSTEM
+      902 Listen      3708 C:\Program Files (x86)\VMware\VMware Player\vmware-authd.exe NT AUTHORITY\SYSTEM
 ```
 
 The above will list all running processes on the target system. Now that we have an understanding of the process that are running and usernames on the target system we can begin to examine other aspects such as the SMB shares exported. To identify the list of SMB shares we can use the Get-SMBShare command.
