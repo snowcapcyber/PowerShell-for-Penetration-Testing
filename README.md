@@ -10,7 +10,45 @@ PowerShell is a scripting language that has been ported to a number of platforms
 
 * [PowerShell on GitHub](https://github.com/PowerShell/PowerShell)
 
-As a scripting language it can be enabled or disabled.
+So let us begin with identifying the version of PowerShell that we are running. We can achieve this via examining the $PSVersionTable local variable.
+```powershell
+PS C:\Program Files\PowerShell\7> $PSVersionTable
+
+Name                           Value
+----                           -----
+PSVersion                      7.3.0
+PSEdition                      Core
+GitCommitId                    7.3.0
+OS                             Microsoft Windows 10.0.19042
+Platform                       Win32NT
+PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0…}
+PSRemotingProtocolVersion      2.3
+SerializationVersion           1.1.0.1
+WSManStackVersion              3.0
+
+PS C:\Program Files\PowerShell\7>
+```
+
+Now that we know the version of PowerShell that is running on the target system, our next step is understand the execution policy that the target implements for PowerShell scripts. To achieve this we can execute the following.
+```powershell
+PS C:\Program Files\PowerShell\7> Get-ExecutionPolicy -List
+
+        Scope ExecutionPolicy
+        ----- ---------------
+MachinePolicy       Undefined
+   UserPolicy       Undefined
+      Process       Undefined
+  CurrentUser       Undefined
+ LocalMachine    RemoteSigned
+
+PS C:\Program Files\PowerShell\7>
+```
+
+As a scripting language PowerShall can be enabled or disabled on the local machine. To enable Powershell we can use the following command
+```powershell
+
+PS C:\> Set-ExecutionPolicy Unrestricted
+```
 
 ## Chapter 2 - Network Mapping
 
@@ -66,7 +104,11 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
 
-We can also use the HHH command to perform a test on a single port as follows:
+* [PowerCat](https://github.com/besimorhino/powercat)
+
+It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set.
+
+We can also use the Test-Connection PowerShell command to perform a test on a single port as follows:
 ```powershell
 PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
 ```
