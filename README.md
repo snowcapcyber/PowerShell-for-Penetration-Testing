@@ -30,6 +30,7 @@ PS C:\Program Files\PowerShell\7>
 ```
 
 Now that we know the version of PowerShell that is running on the target system, our next step is understand the execution policy that the target implements for PowerShell scripts. To achieve this we can execute the following.
+
 ```powershell
 PS C:\Program Files\PowerShell\7> Get-ExecutionPolicy -List
 
@@ -46,8 +47,49 @@ PS C:\Program Files\PowerShell\7>
 
 As a scripting language PowerShall can be enabled or disabled on the local machine. To enable Powershell we can use the following command
 ```powershell
-
 PS C:\> Set-ExecutionPolicy Unrestricted
+```
+
+Once we have created the ability to execute PowerShell scripts on the target system we need to identify the modules that are available to us to download and install.  To support software re-use PowerShell makes use of Modules. We can list all available modules using the find-module command are were can search for a Module containing a key word using the Tag option as follows.
+```powershell
+PS C:\> find-module -tag Azure
+
+Version              Name                                Repository           Description
+-------              ----                                ----------           -----------
+2.10.3               Az.Accounts                         PSGallery            Microsoft Azure PowerShell - Accounts credential management cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Core.
+5.8.4                AzureRM.profile                     PSGallery            Microsoft Azure PowerShell - Profile credential management cmdlets for Azure Resource Manager.
+4.6.1                Azure.Storage                       PSGallery            Microsoft Azure PowerShell - Storage service cmdlets. Manages blobs, queues, tables and files in Microsoft Azure storage accounts
+5.1.0                Az.Storage                          PSGallery            Microsoft Azure PowerShell - Storage service data plane and management cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Co…
+4.9.0                Az.KeyVault                         PSGallery            Microsoft Azure PowerShell - Key Vault service cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Core.
+5.1.1                Az.Compute                          PSGallery            Microsoft Azure PowerShell - Compute service cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Core.  Manages virtual machine
+4.0.1                Az.ApiManagement                    PSGallery            Microsoft Azure PowerShell - Api Management service cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Core.
+1.8.0                Az.Automation                       PSGallery            Microsoft Azure PowerShell - Automation service cmdlets for Azure Resource Manager in Windows PowerShell and PowerShell Core.
+1.1.4                Az.AnalysisServices                 PSGallery            Microsoft Azure PowerShell - Analysis Services cmdlets for Windows PowerShell and PowerShell Core.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . . . . . . . . . . . . . . . . . . . .
+```
+Once we identified the module that we wish to install we can download and install it using the Install-Module command. So in the following we will download and install the SSH module.
+```powershell
+PS C:\> Install-Module SSH
+
+Untrusted repository
+You are installing the modules from an untrusted repository. If you trust this repository, change its InstallationPolicy value by running the Set-PSRepository cmdlet. Are you sure you want to install the modules from
+'PSGallery'?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): Y
+PS C:\> 
+```
+
+We can identify how to use PowerShell module via using the get-help command. In the
+
+```powershell
+PS C:\>get-help Get-Location
+
+NAME
+    Get-Location
+
+SYNTAX
+    Get-Location [-PSProvider <string[]>] [-PSDrive <string[]>] [<CommonParameters>]
+
+    Get-Location [-Stack] [-StackName <string[]>] [<CommonParameters>]
 ```
 
 ## Chapter 2 - Network Mapping
