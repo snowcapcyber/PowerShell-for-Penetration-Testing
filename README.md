@@ -108,6 +108,27 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set.
 
+We can use these tools to perform a quick TCP port scan of the target machine. The IPv4PortScan. tool allows is to specify and start and end port number for our scan.
+
+```powershell
+PS C:\> IPv4PortScan.ps1 -Computername 172.16,24.145 -StartPort 1 -EndPort 1024
+
+Port               : 53
+Protocol           : tcp
+ServiceName        : domain
+ServiceDescription : Domain Name Server
+Status             : Open
+
+Port               : 631
+Protocol           : tcp
+ServiceName        : ipp
+ServiceDescription : IPP (Internet Printing Protocol)
+Status             : Open
+
+PS C:\>
+```
+
+
 We can also use the Test-Connection PowerShell command to perform a test on a single port as follows:
 ```powershell
 PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
