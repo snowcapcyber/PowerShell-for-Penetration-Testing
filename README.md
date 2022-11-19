@@ -78,8 +78,12 @@ You are installing the modules from an untrusted repository. If you trust this r
 PS C:\>
 ```
 
-We can identify how to use PowerShell module via using the get-help command. In the
+We can also import a PowerShell module directly as follows. In the following we will import the functions/cmdlets from the module PowerSploit.psd1.
+```powershell
+PS C:\> Import-Module .\PowerSploit.psd1
+```
 
+We can identify how to use PowerShell module via using the get-help command. In the following we will identify how to use the Get-Location cmdlet/function.
 ```powershell
 PS C:\>get-help Get-Location
 
@@ -148,11 +152,23 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
 
+* [Posh SecMod](https://github.com/darkoperator/Posh-SecMod)
+
 * [PowerCat](https://github.com/besimorhino/powercat)
 
-It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set.
+It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an Arp scan. We can achieve this via the Invoke-ARPScan cmdlet from the Posh-SecMod module.
+```powershell
+PS C:\> Import-Module .\Posh-SecMod.psd1
+PS C:\> Invoke-ARPScan -CIDR 192.168.72.0/24
 
-We can use these tools to perform a quick TCP port scan of the target machine. The IPv4PortScan. tool allows is to specify and start and end port number for our scan.
+MAC                            Address
+---                            -------
+00:AF:81:C0:41:21              192.168.71.10
+05:67:87:AF:89:C1              192.168.71.61
+00:67:32:90:A1:6F              192.168.71.254
+```
+
+We can use some of these tools to perform a quick TCP port scan of the target machine. The IPv4PortScan. tool allows is to specify and start and end port number for our scan.
 
 ```powershell
 PS C:\> IPv4PortScan.ps1 -Computername 172.16,24.145 -StartPort 1 -EndPort 1024
