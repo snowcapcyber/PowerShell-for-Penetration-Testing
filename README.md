@@ -75,7 +75,7 @@ Untrusted repository
 You are installing the modules from an untrusted repository. If you trust this repository, change its InstallationPolicy value by running the Set-PSRepository cmdlet. Are you sure you want to install the modules from
 'PSGallery'?
 [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): Y
-PS C:\> 
+PS C:\>
 ```
 
 We can identify how to use PowerShell module via using the get-help command. In the
@@ -91,6 +91,8 @@ SYNTAX
 
     Get-Location [-Stack] [-StackName <string[]>] [<CommonParameters>]
 ```
+
+Now that we have the ability to profile PowerShell and find/install modules we can begin to use it to perform a penetration test.
 
 ## Chapter 2 - Network Mapping
 
