@@ -83,6 +83,18 @@ We can also import a PowerShell module directly as follows. In the following we 
 PS C:\> Import-Module .\PowerSploit.psd1
 ```
 
+Once we can imported a module we can examine the functions/cmdlets that it supports via the Get-Command cmdlet. In the following we will use the Get-Command cmdlet to identify the functions supported by the module SSH.
+
+```powershell
+PS C:\> Get-Command -module ssh
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Invoke-SSHCommand                                  1.0.0      SSH
+
+PS C:\>
+```
+
 We can identify how to use PowerShell module via using the get-help command. In the following we will identify how to use the Get-Location cmdlet/function.
 ```powershell
 PS C:\>get-help Get-Location
@@ -94,6 +106,12 @@ SYNTAX
     Get-Location [-PSProvider <string[]>] [-PSDrive <string[]>] [<CommonParameters>]
 
     Get-Location [-Stack] [-StackName <string[]>] [<CommonParameters>]
+```
+
+Once you have a PowerShell shell then you can use the following to download files over the Network.
+
+```powershell
+PS C:\> IEX
 ```
 
 Now that we have the ability to profile PowerShell and find/install modules we can begin to use it to perform a penetration test.
@@ -216,10 +234,26 @@ foreach ($HOSTLINE in $HOSTFILE)
     }
 }
 ```
-
 ## Chapter 4 - Banner Grabbing
-
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports.
+
+```powershell
+PS C:\>
+```
+
+## Chapter 5 - File Transfer Protocol (FTP)
+
+```powershell
+PS C:\>
+```
+
+## Chapter 6 - Secure Shell (SSH)
+
+```powershell
+PS C:\>
+```
+
+## Chapter 7 - The Web (WWW)
 
 We can use the Invoke-WebRequest command to get the version information associated with a Web Server.
 ```powershell
@@ -263,7 +297,69 @@ readme   : https://snowcapcyber.com
 
 ```
 
-## Chapter 5 - User Profiling
+```powershell
+PS C:\> Get-HTTPStatus
+```
+
+```powershell
+PS C:\> SocketHttpRequest
+```
+
+```powershell
+PS C:\> Install-Module PSWebTools
+```
+
+## Chapter 8 - Windows File Sharing (SMB)
+
+```powershell
+PS C:\> Find-SMBShare
+```
+
+## Chapter 9 - Active Directory (AD)
+
+```powershell
+PS C:\>
+```
+
+## Chapter 10 - Azure
+
+```powershell
+PS C:\>
+```
+
+## Chapter 11 - SQL Database
+
+```powershell
+PS C:\> Execute-Command-MSSQL
+```
+
+## Chapter 12 - Domain Name System (DNS)
+
+```powershell
+PS C:\> Test-DNSRecord
+```
+
+```powershell
+PS C:\> Resolve-DNSName
+```
+
+## Chapter 13 - Simple Network Management Protocol (SNMP)
+
+```powershell
+PS C:\>
+```
+
+## Chapter 14 - Brute Forcing
+
+Once we have identified a series of TCP services that support authentication then we cab start to Brute force a connection to them. To do this we will make use of the following tools.
+
+* [Offensive PowerShell](https://github.com/samratashok/nishang)
+
+```powershell
+PS C:\>
+```
+
+## Chapter 15 - User Profiling
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
@@ -365,7 +461,7 @@ User        WIN11\Administrator  Local
 User        WIN11\jsmith         Local
 ```
 
-## Chapter 6 - Profiling Local/Remote Systems
+## Chapter 16 - Profiling Local/Remote Systems
 
 Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
 ```powershell
@@ -483,7 +579,7 @@ LocalPort  State ProcessID ProcessName                                          
       902 Listen      3708 C:\Program Files (x86)\VMware\VMware Player\vmware-authd.exe NT AUTHORITY\SYSTEM
 ```
 
-The above will list all running processes on the target system. Now that we have an understanding of the process that are running and usernames on the target system we can begin to examine other aspects such as the SMB shares exported. To identify the list of SMB shares we can use the Get-SMBShare command.
+The above will list all running processes on the target system. Now that we have an understanding of the process that are running and usernames on the target system we can begin to examine other aspects such as the SMB shares exported. To identify the list of SMB shares on a local machine can use the Get-SMBShare command.
 ```powershell
 PS C:> Get-SMBShare
 Name   ScopeName Path       Description
