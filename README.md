@@ -86,7 +86,7 @@ PS C:\> Import-Module .\PowerSploit.psd1
 Once we can imported a module we can examine the functions/cmdlets that it supports via the Get-Command cmdlet. In the following we will use the Get-Command cmdlet to identify the functions supported by the module SSH.
 
 ```powershell
-PS C:\> Get-Command -module ssh
+PS C:\> Get-Command -module SSH
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
@@ -623,11 +623,15 @@ PS C:\> Get-WmiObject -Class Win32_Share -ComputerName DC01
 
 * [Lee Holmes, PowerShell Cookbook: Your Complete Guide to Scripting the Ubiquitous Object-Based Shell, O'Reilly, 2021](https://www.amazon.co.uk/PowerShell-Cookbook-Scripting-Ubiquitous-Object-Based/dp/109810160X/ref=sr_1_5?crid=JF1OK6S95NY2&keywords=powershell&qid=1668186716&s=books&sprefix=powershell%2Cstripbooks%2C64&sr=1-5)
 
-* [Chris McNab, Network Security Assessment: Know Your Network, 3rd Edition, O'Reilly, 2016](https://www.amazon.co.uk/Network-Security-Assessment-Know-Your/dp/149191095X/ref=sr_1_1?crid=2RI4CBCKBC79C&keywords=network+security+assessment&qid=1657708066&sprefix=network+security+a%2Caps%2C63&sr=8-1)
-
 * [Tim Bryant, PTFM: Purple Team Field Manual, Independently Published, 2020](https://www.amazon.co.uk/PTFM-Purple-Team-Field-Manual/dp/B08LJV1QCD/ref=sr_1_1?crid=BR8A8SAS3HCN&keywords=ptfm&qid=1657708194&sprefix=ptfm%2Caps%2C167&sr=8-1)
 
+* [Adam Bertram, PowerShell for SysAdmins, No Starch Press, 2022](https://www.amazon.co.uk/Automate-Boring-Stuff-Powershell-Sysadmins/dp/1593279183)
+
+* [Chris McNab, Network Security Assessment: Know Your Network, 3rd Edition, O'Reilly, 2016](https://www.amazon.co.uk/Network-Security-Assessment-Know-Your/dp/149191095X/ref=sr_1_1?crid=2RI4CBCKBC79C&keywords=network+security+assessment&qid=1657708066&sprefix=network+security+a%2Caps%2C63&sr=8-1)
+
 * [Douglas E. Comer, Internetworking With Tcp/Ip Volume I: Principles, Protocol, And Architecture, 6th Edition, Pearson, 2015](https://www.amazon.co.uk/Internetworking-Tcp-Ip-Principles-Architecture/dp/9332550107/ref=sr_1_2?qid=1657708327&refinements=p_27%3ADouglas+E.+Comer&s=books&sr=1-2&text=Douglas+E.+Comer)
+
+* [Douglas Finke, PowerShell for Developers, O'Reilly, 2012](https://www.amazon.co.uk/Windows-PowerShell-Developers-Douglas-Finke/dp/1449322700/ref=sr_1_1?crid=2LE0JHVCRT3KN&keywords=PowerShell+for+Developers&qid=1668961617&s=books&sprefix=powershell+for+developers%2Cstripbooks%2C185&sr=1-1)
 
 ## Contact Details
 
