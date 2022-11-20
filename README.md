@@ -230,6 +230,11 @@ PS C:\> Start-PortScan.ps1 -ComputerName f1dc2 -StartPort 1 -EndPort 1000
     f1dc2        192.168.13.4  636  TCP      True ldaps          ldap protocol over TLS/SSL (was sldap)
 ```
 
+We can use the [Net-Scan](https://github.com/calebstewart/Net-Scan) tool to can both TCP and UDP ports as shown. This tool allows is to list the TCP/UDP ports that are to scanned.
+```powershell
+PS C:\>.\Net-Scan.ps1 -ip 192.168.13.1 -mask 255.255.255.0 -tcp 88,443,1434 -udp 53
+```
+
 We can also use the Test-Connection PowerShell command to perform a test on a single port as follows:
 ```powershell
 PS C:\> Test-Connection -TargetName 192.168.2.11 -TcpPort 443
