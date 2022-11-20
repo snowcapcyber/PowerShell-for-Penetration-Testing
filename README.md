@@ -10,7 +10,7 @@ PowerShell is a scripting language that has been ported to a number of platforms
 
 * [PowerShell on GitHub](https://github.com/PowerShell/PowerShell)
 
-So let us begin with identifying the version of PowerShell that we are running. We can achieve this via examining the $PSVersionTable local variable.
+For the purposes of this document we are going to focus upon {PowerShell for Microsoft Windows and all of the example will be based upon PowerShell version 7. So let us begin with identifying the version of PowerShell that we are running. We can achieve this via examining the $PSVersionTable local variable.
 ```powershell
 PS C:\Program Files\PowerShell\7> $PSVersionTable
 
