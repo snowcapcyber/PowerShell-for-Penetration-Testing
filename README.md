@@ -333,12 +333,16 @@ PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0
 
 Once we have download a file then we can attempt to upload the file. The success of This function is dependant on the file permission located on the FTP server. To successfully upload a file we must have write permissions to the directory where the file is to be written. In the following we will upload the file archive.zip.
 ```powershell
-PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip -LocalFile C:\>/temp/archive.zip
+PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip -LocalFile C:\>/temp/archive.zip 
 ```
 
 ## Chapter 6 - Secure Shell (SSH), Secure FTP (SFTP) and Secure Copy (SCP)
 
-The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure Copy functions between a client and a server. For SFTP and SCP to function the server much be running Secure Shell (SSH). In the following we will use the Invoke-SSH function to execute a command line command on the client. It should be noted that the Invoke-SSH function will allow us to select the encryption algorithms to be used when communicating between the client and the server.
+The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure Copy functions between a client and a server. For SFTP and SCP to function the server much be running Secure Shell (SSH). In this section we will make uses of the NetCmdlets PowerShell module to access a SSH Server.
+
+* [The NetCmdlets Module](https://cdn.nsoftware.com/help/NCF/cmd/default.htm)
+
+In the following we will use the Invoke-SSH function to execute a command line command on the client. It should be noted that the Invoke-SSH function will allow us to select the encryption algorithms to be used when communicating between the client and the server.
 
 ```powershell
 PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Command 'ls -lisa'
