@@ -282,7 +282,7 @@ We can then use FTP to download files from a FTP Server. In the following we sha
 ```powershell
 client = New-Object System.Net.WebClient
 $client.Credentials = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
-$client.UploadFile("ftp://ftp.shwocapcyber.co.uk/path/archive.zip", "C:\archive.zip")
+$client.UploadFile("ftp://ftp.snowcapcyber.co.uk/path/archive.zip", "C:\archive.zip")
 ```
 
 Finally we can use FTP to download files from a FTP Server. In the following we shall use PowerShell to upload the file archive.zip
