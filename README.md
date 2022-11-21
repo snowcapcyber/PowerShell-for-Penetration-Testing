@@ -1,4 +1,4 @@
-located# PowerShell for Penetration Testing
+a securelocated# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -336,10 +336,12 @@ Once we have download a file then we can attempt to upload the file. The success
 PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip -LocalFile C:\>/temp/archive.zip
 ```
 
-## Chapter 6 - Secure Shell (SSH) and Secure FTP (SFTP)
+## Chapter 6 - Secure Shell (SSH), Secure FTP (SFTP) and Secure Copy (SCP)
+
+The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure copy functions between a client and a server. For SFTP Andrew SCP to function the server much be running Secure Shell (SSH). In the following we will use the Invoke-SSH function to execute a command line command on the client. It should be noted that the Invoke-SSH function will allow us to select the encryption algorithms to be used when communicating between the client and the server.
 
 ```powershell
-PS C:\>
+PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Command 'ls -lisa'
 ```
 
 ## Chapter 7 - The Web (WWW)
