@@ -1,4 +1,4 @@
-# PowerShell for Penetration Testing
+located# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -69,7 +69,7 @@ Version              Name                                Repository           De
 ```
 Once we identified the module that we wish to install we can download and install it using the Install-Module command. So in the following we will download and install the SSH module.
 ```powershell
-PS C:\> Install-Module SSH
+PS C:\> Install-Module -Name SSH
 
 Untrusted repository
 You are installing the modules from an untrusted repository. If you trust this repository, change its InstallationPolicy value by running the Set-PSRepository cmdlet. Are you sure you want to install the modules from
@@ -273,26 +273,67 @@ PS C:\>
 
 When performing a penetration test on a FTP server there are three basic functions that we need to perform. We need to be able to list the contents of directory on an FTP server as well as Upload and download files to the FTRp server. There are a number of tools that allow for us to access FTP.
 
-We can use PowerShell to list the contents of a directory on an FTP server.
+We can use the following PowerShell to list the contents of a directory on an FTP server. In the following we connect to an FTP server and execute the ListDirectoryDetails function to get a list of files. Once we have a list of files we the read them one at a time and write them out.
 ```powershell
-PS C:\>
+$server = "ftp.snowcapcyber.co.uk"
+$port = "21"
+$username = "ajcblyth
+$password = "MyPa55w0rdOK"
+
+$ftp = [System.Net.FtpWebRequest]::create("ftp://$server/")
+$ftp.Credentials =  New-Object System.Net.NetworkCredential($username,$password)
+$ftp.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectoryDetails
+$response = $ftp.GetResponse()
+$responseStream = $response.GetResponseStream()
+$readStream = New-Object System.IO.StreamReader $responseStream
+$files = New-Object System.Collections.ArrayList
+while ($file = $readStream.ReadLine()) {
+  Write-Output $file
+}
 ```
 
-We can then use FTP to download files from a FTP Server. In the following we shall use PowerShell to upload  the file archive.zip
+We can then use FTP to upload files from a FTP Server. In the following we shall use PowerShell to upload  the file archive.zip
 ```powershell
 client = New-Object System.Net.WebClient
 $client.Credentials = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
 $client.UploadFile("ftp://ftp.snowcapcyber.co.uk/path/archive.zip", "C:\archive.zip")
 ```
 
-Finally we can use FTP to download files from a FTP Server. In the following we shall use PowerShell to upload the file archive.zip
+Finally we can use FTP to download files from a FTP Server. In the following we shall use PowerShell to download the file archive.zip
 ```powershell
-PS C:\>
+$source = "ftp://ftp.snowcaocyber.co.uk/archive.zip"
+$target = "c:\temp\archivezip"
+$client = New-Object System.Net.WebClient
+$client.Credentials = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+$client.DownloadFile($source, $target)
 ```
 
-There are a number of modules that support access to FTP. To use these modules we must first install then. In the following we are going to install the HHH module.
+There are a number of modules that support access to FTP. To use these modules we must first install then. In the following we are going to install the NetCmdlets module. Remember that to install a module in PowerShell you need to be the administrator.
 ```powershell
-PS C:\> Install-Module NetCmdlets
+PS C:\> Install-Module -Name NetCmdlets
+```
+
+One we have install the NetCmdlets module, then we can make use of its functionality. In the following we will use the Get-FTP function yo get a list of all file and directors in the root directory of the FTP server.
+
+```powershell
+PS C:\> $creds = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -Cred $creds -List *
+```
+
+Once we have a list of files on the FTP server then we can download a file to the local machine. We can do this using the HHH function as follows:
+```powershell
+PS C:\> $creds = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -Cred $creds -RemoteFile Pub/*
+```
+
+In the above we are going to download all files in the directory Pub on the Ftp Server. In the following we will use the User and Password flags to authenticate and download all files in the directory Pub on the Ftp Server.
+```powershell
+PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/*
+```
+
+Once we have download a file then we can attempt to upload the file. The success of This function is dependant on the file permission located on the FTP server. To successfully upload a file we must have write permissions to the directory where the file is to be written. In the following we will upload the file archive.zip.
+```powershell
+PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip -LocalFile C:\>/temp/archive.zip
 ```
 
 ## Chapter 6 - Secure Shell (SSH) and Secure FTP (SFTP)
