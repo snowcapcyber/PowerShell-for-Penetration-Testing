@@ -338,7 +338,7 @@ PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0
 
 ## Chapter 6 - Secure Shell (SSH), Secure FTP (SFTP) and Secure Copy (SCP)
 
-The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure copy functions between a client and a server. For SFTP Andrew SCP to function the server much be running Secure Shell (SSH). In the following we will use the Invoke-SSH function to execute a command line command on the client. It should be noted that the Invoke-SSH function will allow us to select the encryption algorithms to be used when communicating between the client and the server.
+The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure Copy functions between a client and a server. For SFTP and SCP to function the server much be running Secure Shell (SSH). In the following we will use the Invoke-SSH function to execute a command line command on the client. It should be noted that the Invoke-SSH function will allow us to select the encryption algorithms to be used when communicating between the client and the server.
 
 ```powershell
 PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Command 'ls -lisa'
@@ -352,7 +352,7 @@ PS C:\>Get-SCP -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0r
 In the following we are going to use the Get-SFTP command to download the remote file archive.zip from the ssh server. Will authenticate to the ssh server using the -User and -Password flags.
 
 ```powershell
-PS C:\> Get-SFTP -Server ssh.snowcapcyber.co.u -User ajcblyth -Password MyPa55w0rdOK -RemotefFle Pub/archive.zip
+PS C:\> Get-SFTP -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemotefFle Pub/archive.zip
 ```
 
 The commands Get-SSH, Get-SCP and Get-SFTP all support the use of the NetworkCredential object for authentication. In the following we will use the NetworkCredential object and the -Cred flags to authenticate to the SSH server and download the file archive.zip.
