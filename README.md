@@ -1,4 +1,4 @@
-a securelocated# PowerShell for Penetration Testing
+authentica securelocated# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -342,6 +342,30 @@ The Secure Shell (SSH) allows us to engage in a secure interactive command line 
 
 ```powershell
 PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Command 'ls -lisa'
+```
+
+We can use the Get-SCP command to copy a file from the server to the client. In the following command we are copying the file archive.zip from the server to the client.
+```powershell
+PS C:\>Get-SCP -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip
+```
+
+In the following we are going to use the Get-SFTP command to download the remote file archive.zip from the ssh server. Will authenticate to the ssh server using the -User and -Password flags.
+
+```powershell
+PS C:\> Get-SFTP -Server ssh.snowcapcyber.co.u -User ajcblyth -Password MyPa55w0rdOK -RemotefFle Pub/archive.zip
+```
+
+The commands Get-SSH, Get-SCP and Get-SFTP all support the use of the NetworkCredential object for authentication. In the following we will use the NetworkCredential object and the -Cred flags to authenticate to the SSH server and download the file archive.zip.
+
+```powershell
+PS C:\> $creds = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+PS C:\> Get-SFTP -Server ssh.snowcapcyber.co.u -Cred $cred -RemotefFle Pub/archive.zip
+```
+
+By default the commands, Get-SSH, Get-SCP and Get-SFTP use the default TCP port of 22. But we can specify the TCP port to be used by the server using the Port flag. In the following we will connect to the ssh server ssh.snowcapcyber.co.uk on TCP port 2222 and execute the command 'cat /etc/passwd'.
+
+```powershell
+PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Port 2222 -Command 'cat /etc/passwd'
 ```
 
 ## Chapter 7 - The Web (WWW)
