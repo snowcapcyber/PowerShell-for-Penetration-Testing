@@ -1,6 +1,6 @@
 receive# PowerShell for Penetration Testing
 
-Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network and the systems associated with it.
+Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
 ## Chapter 1 - Introducing PowerShell
 
@@ -78,7 +78,7 @@ You are installing the modules from an untrusted repository. If you trust this r
 PS C:\>
 ```
 
-We can also import a PowerShell module directly as follows. In the following we will import the functions/cmdlets from the module PowerSploit.psd1.
+We can also import a PowerShell module directly as follows. In the following we will import the functions/cmdlets from the module PowerSploit.psd1. To install a PowerShelll module you must run the command in an PowerShell with administrator/root level privileges.
 ```powershell
 PS C:\> Import-Module .\PowerSploit.psd1
 ```
@@ -271,11 +271,31 @@ PS C:\>
 
 ## Chapter 5 - File Transfer Protocol (FTP)
 
+When performing a penetration test on a FTP server there are three basic functions that we need to perform. We need to be able to list the contents of directory on an FTP server as well as Upload and download files to the FTRp server. There are a number of tools that allow for us to access FTP.
+
+We can use PowerShell to list the contents of a directory on an FTP server.
 ```powershell
 PS C:\>
 ```
 
-## Chapter 6 - Secure Shell (SSH)
+We can then use FTP to download files from a FTP Server. In the following we shall use PowerShell to upload  the file archive.zip
+```powershell
+client = New-Object System.Net.WebClient
+$client.Credentials = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+$client.UploadFile("ftp://ftp.shwocapcyber.co.uk/path/archive.zip", "C:\archive.zip")
+```
+
+Finally we can use FTP to download files from a FTP Server. In the following we shall use PowerShell to upload the file archive.zip
+```powershell
+PS C:\>
+```
+
+There are a number of modules that support access to FTP. To use these modules we must first install then. In the following we are going to install the HHH module.
+```powershell
+PS C:\> Install-Module NetCmdlets
+```
+
+## Chapter 6 - Secure Shell (SSH) and Secure FTP (SFTP)
 
 ```powershell
 PS C:\>
@@ -658,6 +678,32 @@ We can achieve the same results using the WmiObject interface as follows:
 ```powershell
 PS C:\> Get-WmiObject -Class Win32_Share -ComputerName DC01
 ```
+
+We can also profile the local and remote machines using the Get-HotFix command. In the following example we will list all of the HotFixes that have been applied.
+
+```powershell
+PS C:\> get-hotfix
+
+Source        Description      HotFixID      InstalledBy          InstalledOn
+------        -----------      --------      -----------          -----------
+WKSTN-01      Update           KB5013624     NT AUTHORITY\SYSTEM  19/11/2022 00:00:00
+WKSTN-01      Update           KB4562830     NT AUTHORITY\SYSTEM  19/11/2022 00:00:00
+WKSTN-01      Security Update  KB4570334                          18/11/2020 00:00:00
+WKSTN-01      Update           KB4577586     NT AUTHORITY\SYSTEM  18/11/2022 00:00:00
+WKSTN-01      Security Update  KB4580325                          19/11/2020 00:00:00
+WKSTN-01      Security Update  KB4586864                          19/11/2020 00:00:00
+WKSTN-01      Security Update  KB5013942     NT AUTHORITY\SYSTEM  19/11/2022 00:00:00
+WKSTN-01      Security Update  KB5014032     NT AUTHORITY\SYSTEM  18/11/2022 00:00:00
+```
+
+Can can also use Get-HotFix command to profile the applied HotFixes on a target system. In the following the system that we are targeting is dc01.snowcapcyber.co.uk and the username that we are using is SNOWCAPCYBER\ajcblyth.
+```powershell
+PS C:\> Get-HotFix -ComputerName dc01.snowcapcyber.co.uk -Credential SNOWCAPCYBER\ajcblyth
+```
+
+PS> Get-HotFix -Description Security* -ComputerName Server01, Server02 -Credential Domain01\admin01
+
+
 
 We can also use PowerShell to create a back door to the target system.
 
