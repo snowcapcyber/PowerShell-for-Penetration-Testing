@@ -682,7 +682,7 @@ PS C:\> Get-WmiObject -Class Win32_Share -ComputerName DC01
 We can also profile the local and remote machines using the Get-HotFix command. In the following example we will list all of the HotFixes that have been applied.
 
 ```powershell
-PS C:\> get-hotfix
+PS C:\> Get-HotFix
 
 Source        Description      HotFixID      InstalledBy          InstalledOn
 ------        -----------      --------      -----------          -----------
