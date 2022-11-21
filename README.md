@@ -1,4 +1,4 @@
-receive# PowerShell for Penetration Testing
+# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
