@@ -1,4 +1,4 @@
-# PowerShell for Penetration Testing
+functionality# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -26,7 +26,7 @@ PSRemotingProtocolVersion      2.3
 SerializationVersion           1.1.0.1
 WSManStackVersion              3.0
 
-PS C:\Program Files\PowerShell\7>
+PS C:>
 ```
 
 Now that we know the version of PowerShell that is running on the target system, our next step is understand the execution policy that the target implements for PowerShell scripts. To achieve this we can execute the following.
@@ -263,11 +263,47 @@ foreach ($HOSTLINE in $HOSTFILE)
 }
 ```
 ## Chapter 4 - Banner Grabbing
-Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports.
+Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports. The goal of the following PowerShell is connect to a TCP port on a target machine and read the data from the port.
 
 ```powershell
-PS C:\>
+$Server = "www.snowcapcyber.co.uk
+$TCPPort = "80"
+$tcpConnection = New-Object System.Net.Sockets.TcpClient($Server, $TCPPort)
+$tcpStream = $tcpConnection.GetStream()
+$reader = New-Object System.IO.StreamReader($tcpStream)
+$writer.AutoFlush = $true
+while ($tcpStream.DataAvailable) { $reader.ReadLine() }
+$reader.Close()
+$tcpConnection.Close()
 ```
+
+With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functiuoinality of the following PowerShell is akin to that of the Telnet utility.
+```powershell
+$Server = "www.snowcapcyber.co.uk
+$TCPPort = "80"
+$tcpConnection = New-Object System.Net.Sockets.TcpClient($Server, $TCPPort)
+$tcpStream = $tcpConnection.GetStream()
+$reader = New-Object System.IO.StreamReader($tcpStream)
+$writer = New-Object System.IO.StreamWriter($tcpStream)
+$writer.AutoFlush = $true
+while ($tcpConnection.Connected)
+{
+    while ($tcpStream.DataAvailable) { $reader.ReadLine() }
+    if ($tcpConnection.Connected)
+    {
+        Write-Host -NoNewline "> "
+        $command = Read-Host
+        if ($command -eq "escape") { break }
+        $writer.WriteLine($command) | Out-Null
+    }
+}
+
+$reader.Close()
+$writer.Close()
+$tcpConnection.Close()
+```
+
+So in the above we are going to connect an HTTP/WWW server and then send commands and receive/display the results.
 
 ## Chapter 5 - File Transfer Protocol (FTP)
 
@@ -441,8 +477,39 @@ PS C:\> Install-Module PSWebTools
 
 ## Chapter 8 - Windows File Sharing (SMB)
 
+Using PowerShell we can query the local machine to see what SMB shares it is making use of. To do this we must have the correct permissions otherwise the Get-SmbConnection cmdlet will return an error and say that access has been denied.
 ```powershell
-PS C:\> Find-SMBShare
+PS C:\> Get-SmbConnection
+ServerName          ShareName           UserName             Credential           Dialect             NumOpens
+----------          ---------           --------             ----------           -------             --------
+DC-01               DATA                SNOWCAPCYBER\And.... SNOWCAPCYBER.CO..... 3.00                0
+DC-01               IPC$                SNOWCAPCYBER\And.... SNOWCAPCYBER.CO..... 3.00                0
+```
+
+The Get-SmbConnection cmdlet not only allows us to query a local machine it also allows us to query a remote machine via the -ServerName. Via using the HHH cmdlet we can start to identify the SMC shares that are being used within a target domain.
+```powershell
+PS C:\> Get-SmbConnection -ServerName DC-01.SNOWCAPCYBER.CO.UK
+ServerName          ShareName           UserName             Credential           Dialect             NumOpens
+----------          ---------           --------             ----------           -------             --------
+DC-01.SNOWCAPCYB....DATA                SNOWCAPCYBER\DC-01$  SNOWCAPCYBER\DC-01$  3.00                0
+```
+
+W can also query the local host to identify what shares the local host is exporting to the network. The Get-SmbShare cmdlet retrieves objects that represent the Server Message Block (SMB) shares being displayed by the computer.
+```powershell
+PS C:\> Get-SMBShare
+Name                          ScopeName                     Path                          Description
+----                          ---------                     ----                          -----------
+ADMIN$                        *                             C:\Windows                    Remote Admin
+C$                            *                             C:\                           Default share
+D$                            *                             D:\                           Default share   
+```
+
+We can also use HHH t query the local host and see if it has share has been mounted by a specific server server.
+```powershell
+PS C:\> Get-SmbShare -ScopeName "App-Dev01"
+Name                          ScopeName                     Path                          Description
+----                          ---------                     ----                          -----------
+D$                            App-Dev0                      D:\                           Default Share 
 ```
 
 ## Chapter 9 - Active Directory (AD)
