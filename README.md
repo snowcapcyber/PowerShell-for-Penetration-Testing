@@ -492,16 +492,11 @@ readme   : https://snowcapcyber.com
 
 ```
 
-```powershell
-PS C:\> Get-HTTPStatus
-```
+The HHH module is designed to probe a web site and return the status information returned by a HTTP request. In the following we are going to import the module and then query the web site www.snowcapcyber.co.uk.
 
 ```powershell
-PS C:\> SocketHttpRequest
-```
-
-```powershell
-PS C:\> Install-Module PSWebTools
+PS C:\> Install-Module -Name SocketHttpRequest
+PS C:\> Invoke-SocketHttpRequest -IP 192.168.2.101 -Port 80 -HttpRequest "GET / HTTP/1.0`r`nHOST: www.snowcapcyber.co.uk`r`n`r`n"
 ```
 
 ## Chapter 8 - Windows File Sharing (SMB)
@@ -542,6 +537,12 @@ D$                            App-Dev0                      D:\                 
 ```
 
 ## Chapter 9 - Active Directory (AD)
+
+The PowerSploit module provides a ser of command that we cab use to profile an exploit an Active Directory.
+
+* [PowerSploit](https://powersploit.readthedocs.io/en/latest/)
+
+First we need ti import the PowerSploit module so that we can make use of its functions.
 
 ```powershell
 PS C:\>
