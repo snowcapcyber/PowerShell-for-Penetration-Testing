@@ -262,8 +262,29 @@ foreach ($HOSTLINE in $HOSTFILE)
     }
 }
 ```
-## Chapter 4 - Banner Grabbing
-Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running. We can do this in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports. The goal of the following PowerShell is connect to a TCP port on a target machine and read the data from the port.
+## Chapter 4 - Banner Grabbing and OS Fingerprinting
+Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running and a target host operating system. To identify the operating of the local computer system we will use a WMI object as follows:
+```powershell
+PS C:\> (Get-WmiObject Win32_OperatingSystem).Caption
+Output :
+Microsoft Windows 10
+```
+
+We can easily get the OS version details of a remote computer by adding the parameter -ComputerName to Get-WmiObject
+```powershell
+PS C:\> (Get-WmiObject Win32_OperatingSystem -ComputerName dc-01.snowcapcyber.co.uk).Caption
+Microsoft Windows Server 2012 Standard
+```
+
+Connecting a remote server/machine may require providing admin user credentials. In this case, you may receive the error message “Get-WmiObject : Access is denied“. Use the below command to pass user credentials to the Get-WmiObject command.
+
+```powershell
+PS C:\> $PSCredential = Get-Credential "ComputerName\UserName"
+PS C:\> Get-WmiObject Win32_OperatingSystem -ComputerName dc-02.snowcapcyber.co.uk -Credential $PSCredential
+Microsoft Windows Server 2016 Standard
+```
+
+We can do capture version information about the services running in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports. The goal of the following PowerShell is connect to a TCP port on a target machine and read the data from the port.
 
 ```powershell
 $Server = "www.snowcapcyber.co.uk
@@ -477,7 +498,7 @@ PS C:\> Install-Module PSWebTools
 
 ## Chapter 8 - Windows File Sharing (SMB)
 
-Using PowerShell we can query the local machine to see what SMB shares it is making use of. To do this we must have the correct permissions otherwise the Get-SmbConnection cmdlet will return an error and say that access has been denied.
+Windows makes use of Server Message Block (SMB) to allow for files to be shared over a network. Using PowerShell we can query the local machine to see what SMB shares it is making use of. To do this we must have the correct permissions otherwise the Get-SmbConnection cmdlet will return an error and say that access has been denied.
 ```powershell
 PS C:\> Get-SmbConnection
 ServerName          ShareName           UserName             Credential           Dialect             NumOpens
@@ -509,7 +530,7 @@ We can also use HHH t query the local host and see if it has share has been moun
 PS C:\> Get-SmbShare -ScopeName "App-Dev01"
 Name                          ScopeName                     Path                          Description
 ----                          ---------                     ----                          -----------
-D$                            App-Dev0                      D:\                           Default Share 
+D$                            App-Dev0                      D:\                           Default Share
 ```
 
 ## Chapter 9 - Active Directory (AD)
