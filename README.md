@@ -266,7 +266,6 @@ foreach ($HOSTLINE in $HOSTFILE)
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running and a target host operating system. To identify the operating of the local computer system we will use a WMI object as follows:
 ```powershell
 PS C:\> (Get-WmiObject Win32_OperatingSystem).Caption
-Output :
 Microsoft Windows 10
 ```
 
