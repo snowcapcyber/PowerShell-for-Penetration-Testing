@@ -290,26 +290,20 @@ PS C:\> (Get-WmiObject Win32_OperatingSystem -ComputerName dc-01.snowcapcyber.co
 Microsoft Windows Server 2012 Standard
 ```
 
-Connecting a remote server/machine may require providing admin user credentials. In this case, you may receive the error message “Get-WmiObject : Access is denied“. Use the below command to pass user credentials to the Get-WmiObject command.
+When using the HHH object to connect to a target system we may receive the error message “Get-WmiObject : Access is denied“. This error message is telling us that we need to make use of a set admin user credentials to access the resource. In the following PowerShell we make use of the Get-Credential object to create a set of credentials and then pass them to the Get-WmiObject object.
 
 ```powershell
-PS C:\> $PSCredential = Get-Credential "ComputerName\UserName"
+PS C:\> $PSCredential = Get-Credential "dc-02.nowcapcyber.co.uk\administrator"
 PS C:\> Get-WmiObject Win32_OperatingSystem -ComputerName dc-02.snowcapcyber.co.uk -Credential $PSCredential
 Microsoft Windows Server 2016 Standard
 ```
 
-We can do capture version information about the services running in PowerShell via the application of a set of commands.  List a list of open ports running on a target system on the network we can use specific PowerShell commands to access specific ports. The goal of the following PowerShell is connect to a TCP port on a target machine and read the data from the port.
+The goal of the following PowerShell tool is to connect to a TCP port on a target machine and then to read the data from the port.
 
 ```powershell
-$Server = "www.snowcapcyber.co.uk
-$TCPPort = "80"
-$tcpConnection = New-Object System.Net.Sockets.TcpClient($Server, $TCPPort)
-$tcpStream = $tcpConnection.GetStream()
-$reader = New-Object System.IO.StreamReader($tcpStream)
-$writer.AutoFlush = $true
-while ($tcpStream.DataAvailable) { $reader.ReadLine() }
-$reader.Close()
-$tcpConnection.Close()
+> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
+220-Welcome To NEP Finland FTP service!
+220 Service ready for new user
 ```
 
 With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functiuoinality of the following PowerShell is akin to that of the Telnet utility.
