@@ -170,6 +170,8 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [Posh SecMod](https://github.com/darkoperator/Posh-SecMod)
 
+* [The NetCmdlets Module](https://cdn.nsoftware.com/help/NCF/cmd/default.htm)
+
 It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an ARP scan. To achieve this we can make use of Get-NetNeighbor cmdlet.
 ```powershell
 PS C:\> Get-NetNeighbor -AddressFamily IPv4
@@ -262,6 +264,19 @@ foreach ($HOSTLINE in $HOSTFILE)
     }
 }
 ```
+
+We can also perform UDP port scanning via the application NetCmdlets Module. First we need to install the NetCmdlets module.
+
+```powershell
+PS C:\> Install-Module -Name NetCmdlets
+```
+
+The Send-UDP cmdlet will bind to a specific local host address and send UDP datagrams to a remote Server. In the following we will send dome data to UDP port 4444 on the server udpserver.snowcapcyber.co.uk.
+
+```powershell
+PS C:\> send-udp -server udpserver.snowcapcyber.co.uk -port 4444 -data "test from netcmdlets"
+```
+
 ## Chapter 4 - Banner Grabbing and OS Fingerprinting
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running and a target host operating system. To identify the operating of the local computer system we will use a WMI object as follows:
 ```powershell
