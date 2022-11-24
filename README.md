@@ -12,7 +12,7 @@ PowerShell is a scripting language that has been ported to a number of platforms
 
 For the purposes of this document we are going to focus upon {PowerShell for Microsoft Windows and all of the example will be based upon PowerShell version 7. So let us begin with identifying the version of PowerShell that we are running. We can achieve this via examining the $PSVersionTable local variable.
 ```powershell
-PS C:\Program Files\PowerShell\7> $PSVersionTable
+PS C:\> $PSVersionTable
 
 Name                           Value
 ----                           -----
@@ -459,6 +459,7 @@ $result.RawContent
 
 The above PowerShell defines a URL and then uses the Invoke-WebRequest command to execute the GET HTTP verb on the Server. It should be noted that this command will allow us to execute a other HTTP verbs.
 ```powershell
+PS C:\> Invoke-WebRequest http://www.snowcapcyber.co.uk
 HTTP/1.1 200 OK
 Link: <https://www.snowcapcyber.com/wp-json/>; rel="https://api.org/", <https://www.snowcapcyber.com/wp-json/wp/v2/pages/11822>; rel="alternate"; type="application/json", <https://www.snowcapcyber.com/>; rel=shortlink, <https://www.snowcapcyber.com/wp-json/>; rel="https://api.org/", <https://www.snowcapcyber.com/wp-json/wp/v2/pages/11822>; rel="alternate"; type="application/json", <https://www.snowcapcyber.com/>; rel=shortlink
 Pragma: public
@@ -538,14 +539,101 @@ D$                            App-Dev0                      D:\                 
 
 ## Chapter 9 - Active Directory (AD)
 
-The PowerSploit module provides a ser of command that we cab use to profile an exploit an Active Directory.
-
-* [PowerSploit](https://powersploit.readthedocs.io/en/latest/)
-
-First we need ti import the PowerSploit module so that we can make use of its functions.
+PowerShell comes with a series of tools that support access-to, and manipulation-of, Active Directory. We can start by profiling the local machine and identifying Active Directory Information.
 
 ```powershell
-PS C:\>
+PS C:\> GSystem.DirectoryServices.ActiveDirectory.Domain]::getcomputerdomain()
+
+Forest                  : snowcapcyber.co.uk
+DomainControllers       : {DC-01.snowcapcyber.co.uk}
+Children                : {}
+DomainMode              : Windows8Domain
+DomainModeLevel         : 5
+Parent                  :
+PdcRoleOwner            : DC-01.snowcapcyber.co.uk
+RidRoleOwner            : DC-01.snowcapcyber.co.uk
+InfrastructureRoleOwner : DC-01.snowcapcyber.co.uk
+Name                    : snowcapcyber.co.uk
+```
+
+We can also execute the command on a remote machine provided that we have a correct set of credentials.
+```powershell
+PS C:\> $creds = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rdOK")
+PS C:\> Invoke-Command -ComputerName 'dc01.snowcapcyber.com' -Credential $cred-ScriptBlock {Get-SmbShare}
+```
+
+To query a domain about the users and computers located with a domain we can make use of the following. In the following we are doing to query the computer DC-01.snowcapcyber.co.uk and ask it to display information about the user 'Andrew Blyth'.
+```powershell
+PS C:\> get-aduser 'Andrew Blyth' -Server DC-01.snowcapcyber.co.uk
+
+DistinguishedName : CN=Andrew Blyth,CN=Users,DC=snowcapcyber,DC=co,DC=uk
+Enabled           : True
+GivenName         : Andrew
+Name              : Andrew Blyth
+ObjectClass       : user
+ObjectGUID        : 514e3604-66cc-4863-9c8b-8bcb26de9dd9
+SamAccountName    : Andrew Blyth
+SID               : S-1-5-21-345604638-380621598-4273189824-1001
+Surname           : Blyth
+UserPrincipalName : ajcblyth@snowcapcyber.co.uk
+```
+
+We can get information about the domain that a computer is located in via the following
+```powershell
+PS C:\> get-addomain
+
+AllowedDNSSuffixes                 : {}
+ChildDomains                       : {}
+ComputersContainer                 : CN=Computers,DC=snowcapcyber,DC=co,DC=uk
+DeletedObjectsContainer            : CN=Deleted Objects,DC=snowcapcyber,DC=co,DC=uk
+DistinguishedName                  : DC=snowcapcyber,DC=co,DC=uk
+DNSRoot                            : snowcapcyber.co.uk
+DomainControllersContainer         : OU=Domain Controllers,DC=snowcapcyber,DC=co,DC=uk
+DomainMode                         : Windows2012Domain
+DomainSID                          : S-1-5-21-345604638-380621598-4273189824
+ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=snowcapcyber,DC=co,DC=uk
+Forest                             : snowcapcyber.co.uk
+InfrastructureMaster               : DC-01.snowcapcyber.co.uk
+LastLogonReplicationInterval       :
+LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=snowcapcyber,D
+                                     C=co,DC=uk}
+LostAndFoundContainer              : CN=LostAndFound,DC=snowcapcyber,DC=co,DC=uk
+ManagedBy                          :
+Name                               : snowcapcyber
+NetBIOSName                        : SNOWCAPCYBER
+ObjectClass                        : domainDNS
+ObjectGUID                         : 7dbff675-d36c-49a6-9b86-bc2ac2734361
+ParentDomain                       :
+PDCEmulator                        : DC-01.snowcapcyber.co.uk
+PublicKeyRequiredPasswordRolling   :
+QuotasContainer                    : CN=NTDS Quotas,DC=snowcapcyber,DC=co,DC=uk
+ReadOnlyReplicaDirectoryServers    : {}
+ReplicaDirectoryServers            : {DC-01.snowcapcyber.co.uk}
+RIDMaster                          : DC-01.snowcapcyber.co.uk
+SubordinateReferences              : {DC=ForestDnsZones,DC=snowcapcyber,DC=co,DC=uk,
+                                     DC=DomainDnsZones,DC=snowcapcyber,DC=co,DC=uk,
+                                     CN=Configuration,DC=snowcapcyber,DC=co,DC=uk}
+SystemsContainer                   : CN=System,DC=snowcapcyber,DC=co,DC=uk
+UsersContainer                     : CN=Users,DC=snowcapcyber,DC=co,DC=uk
+```
+
+We can get information about a forest that a computer is part of as follows:
+```powershell
+PS C:\> get-adforest
+
+ApplicationPartitions : {DC=DomainDnsZones,DC=snowcapcyber,DC=co,DC=uk, DC=ForestDnsZones,DC=snowcapcyber,DC=co,DC=uk}
+CrossForestReferences : {}
+DomainNamingMaster    : DC-01.snowcapcyber.co.uk
+Domains               : {snowcapcyber.co.uk}
+ForestMode            : Windows2012Forest
+GlobalCatalogs        : {DC-01.snowcapcyber.co.uk}
+Name                  : snowcapcyber.co.uk
+PartitionsContainer   : CN=Partitions,CN=Configuration,DC=snowcapcyber,DC=co,DC=uk
+RootDomain            : snowcapcyber.co.uk
+SchemaMaster          : DC-01.snowcapcyber.co.uk
+Sites                 : {Default-First-Site-Name}
+SPNSuffixes           : {}
+UPNSuffixes           : {}
 ```
 
 ## Chapter 10 - Azure
@@ -876,13 +964,16 @@ WKSTN-01      Security Update  KB5014032     NT AUTHORITY\SYSTEM  18/11/2022 00:
 ```
 
 Can can also use Get-HotFix command to profile the applied HotFixes on a target system. In the following the system that we are targeting is dc01.snowcapcyber.co.uk and the username that we are using is SNOWCAPCYBER\ajcblyth.
+
 ```powershell
 PS C:\> Get-HotFix -ComputerName dc01.snowcapcyber.co.uk -Credential SNOWCAPCYBER\ajcblyth
 ```
 
-PS> Get-HotFix -Description Security* -ComputerName Server01, Server02 -Credential Domain01\admin01
+We can also the Invoke-Command command to execute a remote commands on a target system. In the following we will use the Invoke-Command command to execute the Get-HotFix command on the target system dc03.snowcapcyber.co.uk.
 
-
+```powershell
+PS C:\> Invoke-Command -ComputerName dc03.snowcapcyber.co.uk -ScriptBlock { Get-HotFix }
+```
 
 We can also use PowerShell to create a back door to the target system.
 
