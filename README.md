@@ -601,7 +601,7 @@ ObjectClass       : group
 ObjectGUID        : ca30f7eb-1f3d-4351-a3d4-ee94c2e9c5fe
 SamAccountName    : Users
 SID               : S-1-5-32-545
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 ```
 
 We can get information about the domain that a computer is located in via the following:
@@ -702,9 +702,6 @@ SamAccountName    : WKSTN-01$
 SID               : S-1-5-21-345604638-380621598-4273189824-1109
 UserPrincipalName :
 ```
-
-PS C:\Users\Andrew Blyth.SNOWCAPCYBER>
-
 
 ## Chapter 10 - Azure
 
