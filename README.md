@@ -703,6 +703,62 @@ SID               : S-1-5-21-345604638-380621598-4273189824-1109
 UserPrincipalName :
 ```
 
+Once we have profiled the Active Directory we can try to create a user. The following will create a user and then prompt us to enter the password.
+
+```powershell
+PS C:\> New-ADUser -Name "Andrew J C Blyth" -Accountpassword (Read-Host -AsSecureString "AccountPassword") -Enabled $true
+```
+
+In the following we use the GGG command to create a new user and provide a details on the user to the Active Directory.
+
+```powershell
+PS C:\> New-ADUser -Name "John Smith" -GivenName "John" -Surname "Smith" -SamAccountName "J.Smith" -UserPrincipalName "J.Smith@snowcapcyber.co.uk -Path "OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk" -AccountPassword(Read-Host -AsSecureString "Input Password") -Enabled $true
+```
+
+We can also search an Active Directory to identify users that are disabled.
+
+```powershell
+PS C:\> Search-ADAccount -AccountDisabled -UsersOnly | FT Name,ObjectClass -A
+Name                    ObjectClass
+----                    -----------
+Iain Sutherland         user
+Huw Read                user
+Kosta Xynos             user
+```
+
+We will now use PowerShell to reset a users password as follows:
+
+```powershell
+PS C:\> Set-ADAccountPassword -Identity "CN=John Smith,OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk" -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "p@ssw0rd" -Force)
+```
+
+The Enable-ADAccount cmdlet enables an Active Directory user, computer, or service account. In the following we will enabled a disabled account.
+
+```powershell
+PS C:\> Enable-ADAccount -Identity "CN=Iain Sutherland ,OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk"
+```
+
+Or we can search for accounts that have expired.
+
+```powershell
+PS C:\> Search-ADAccount -AccountExpiring -TimeSpan 6.00:00:00 | FT Name,ObjectClass -A
+Name           ObjectClass
+----           -----------
+John Smith     user
+```
+
+The Clear-ADAccountExpiration cmdlet clears the expiration date for an Active Directory user or computer account. When you clear the expiration date for an account, the account does not expire.
+
+```powershell
+PS C:\>  Clear-ADAccountExpiration -Identity JSmith
+```
+
+We can also use a distinguished name when clearing an account.
+
+```powershell
+PS C:\>  Clear-ADAccountExpiration -Identity "CN=John Smith,OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk"
+```
+
 ## Chapter 10 - Azure
 
 ```powershell
