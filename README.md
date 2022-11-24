@@ -563,6 +563,7 @@ PS C:\> Invoke-Command -ComputerName 'dc01.snowcapcyber.com' -Credential $cred-S
 ```
 
 To query a domain about the users and computers located with a domain we can make use of the following. In the following we are doing to query the computer DC-01.snowcapcyber.co.uk and ask it to display information about the user 'Andrew Blyth'.
+
 ```powershell
 PS C:\> get-aduser 'Andrew Blyth' -Server DC-01.snowcapcyber.co.uk
 
@@ -578,7 +579,33 @@ Surname           : Blyth
 UserPrincipalName : ajcblyth@snowcapcyber.co.uk
 ```
 
-We can get information about the domain that a computer is located in via the following
+Once we have identified we user we can then Identify  the groups within a domain using the 'Get-ADGroup' command.
+
+```powershell
+PS C:\> get-adgroup -filter  *
+
+DistinguishedName : CN=Administrators,CN=Builtin,DC=snowcapcyber,DC=co,DC=uk
+GroupCategory     : Security
+GroupScope        : DomainLocal
+Name              : Administrators
+ObjectClass       : group
+ObjectGUID        : d3f7a3a8-e1f6-4477-901b-2a05264194b1
+SamAccountName    : Administrators
+SID               : S-1-5-32-544
+
+DistinguishedName : CN=Users,CN=Builtin,DC=snowcapcyber,DC=co,DC=uk
+GroupCategory     : Security
+GroupScope        : DomainLocal
+Name              : Users
+ObjectClass       : group
+ObjectGUID        : ca30f7eb-1f3d-4351-a3d4-ee94c2e9c5fe
+SamAccountName    : Users
+SID               : S-1-5-32-545
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+```
+
+We can get information about the domain that a computer is located in via the following:
+
 ```powershell
 PS C:\> get-addomain
 
@@ -617,6 +644,20 @@ SystemsContainer                   : CN=System,DC=snowcapcyber,DC=co,DC=uk
 UsersContainer                     : CN=Users,DC=snowcapcyber,DC=co,DC=uk
 ```
 
+For a specific domain we try and discover the domain Controllers. In the following example we are targeting the domain 'snowcapcyber.co.uk'
+.
+```powershell
+PS C:\> get-addomaincontroller -Discover -DomainName snowcapcyber.co.uk
+
+Domain      : snowcapcyber.co.uk
+Forest      : snowcapcyber.co.uk
+HostName    : {DC-01.snowcapcyber.co.uk}
+IPv4Address : 192.168.2.11
+IPv6Address :
+Name        : DC-01
+Site        : Default-First-Site-Name
+```
+
 We can get information about a forest that a computer is part of as follows:
 ```powershell
 PS C:\> get-adforest
@@ -635,6 +676,35 @@ Sites                 : {Default-First-Site-Name}
 SPNSuffixes           : {}
 UPNSuffixes           : {}
 ```
+
+We can expand our analysis of an Active Directory by identifying the number of computers with a domain.
+
+```powershell
+PS C:\> get-adcomputer -filter * -Server DC-01.snowcapcyber.co.uk
+
+DistinguishedName : CN=DC-01,OU=Domain Controllers,DC=snowcapcyber,DC=co,DC=uk
+DNSHostName       : DC-01.snowcapcyber.co.uk
+Enabled           : True
+Name              : DC-01
+ObjectClass       : computer
+ObjectGUID        : d3ed3abe-9394-406b-8f85-29e66dbce6ef
+SamAccountName    : DC-01$
+SID               : S-1-5-21-345604638-380621598-4273189824-1002
+UserPrincipalName :
+
+DistinguishedName : CN=WKSTN-01,CN=Computers,DC=snowcapcyber,DC=co,DC=uk
+DNSHostName       : wkstn-01.snowcapcyber.co.uk
+Enabled           : True
+Name              : WKSTN-01
+ObjectClass       : computer
+ObjectGUID        : da481833-8e61-4cbe-bf6b-73d0be1879d0
+SamAccountName    : WKSTN-01$
+SID               : S-1-5-21-345604638-380621598-4273189824-1109
+UserPrincipalName :
+```
+
+PS C:\Users\Andrew Blyth.SNOWCAPCYBER>
+
 
 ## Chapter 10 - Azure
 
