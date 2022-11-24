@@ -709,7 +709,7 @@ Once we have profiled the Active Directory we can try to create a user. The foll
 PS C:\> New-ADUser -Name "Andrew J C Blyth" -Accountpassword (Read-Host -AsSecureString "AccountPassword") -Enabled $true
 ```
 
-In the following we use the GGG command to create a new user and provide a details on the user to the Active Directory.
+In the following we use the New-ADUser command to create a new user and provide a details on the user to the Active Directory.
 
 ```powershell
 PS C:\> New-ADUser -Name "John Smith" -GivenName "John" -Surname "Smith" -SamAccountName "J.Smith" -UserPrincipalName "J.Smith@snowcapcyber.co.uk -Path "OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk" -AccountPassword(Read-Host -AsSecureString "Input Password") -Enabled $true
