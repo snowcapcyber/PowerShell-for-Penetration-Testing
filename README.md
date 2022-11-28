@@ -314,7 +314,7 @@ With some TCP servers we may wish to interact directly. So the following allow i
 
 ```powershell
 PS C:\> ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.co.uk -Port 80
-Creating a connection to: www.snowcapcyber.com  on TCP port:  80
+Creating a connection to: www.snowcapcyber.co.uk  on TCP port:  80
 prompt>
 ```
 
