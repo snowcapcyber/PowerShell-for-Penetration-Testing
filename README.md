@@ -310,7 +310,7 @@ PS C:\> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
 220 Service ready for new user
 ```
 
-With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functiuoinality of the following PowerShell is akin to that of the Telnet utility.
+With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functionality of the following PowerShell is akin to that of the Telnet utility.
 
 ```powershell
 PS C:\> ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.co.uk -Port 80
