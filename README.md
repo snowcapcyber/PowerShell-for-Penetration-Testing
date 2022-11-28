@@ -452,7 +452,12 @@ PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa5
 
 ## Chapter 7 - The Web (WWW)
 
+There are a number of modules and applications that we can use to profile a and exploit a web server.
+
+* [PowerCat](https://github.com/secabstraction/PowerCat)
+
 We can use the Invoke-WebRequest command to get the version information associated with a Web Server.
+
 ```powershell
 $url = 'https://www.snowcapcyber.com'
 $result = Invoke-WebRequest -Method GET -Uri $url -UseBasicParsing
@@ -500,6 +505,13 @@ The HHH module is designed to probe a web site and return the status information
 ```powershell
 PS C:\> Install-Module -Name SocketHttpRequest
 PS C:\> Invoke-SocketHttpRequest -IP 192.168.2.101 -Port 80 -HttpRequest "GET / HTTP/1.0`r`nHOST: www.snowcapcyber.co.uk`r`n`r`n"
+```
+
+The [PowerCat](https://github.com/secabstraction/PowerCat) utilising allows to to connect to a TCP port and to send and recieve HTTTP requests. In the following the first thing we have to do is to import the PowerCat](https://github.com/secabstraction/PowerCat)  module. Then we can connect to TCP port 80 on www.snowcapcyber.co.uk and start to send and receive data.
+
+```powershell
+PS C:\> Import-Module ./PowerCat.psd1
+PS C:\> Connect-PowerCat -RemoteIp 10.12.148.14 -Port 80
 ```
 
 ## Chapter 8 - Windows File Sharing (SMB)
