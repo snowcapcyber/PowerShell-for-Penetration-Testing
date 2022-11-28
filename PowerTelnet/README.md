@@ -1,7 +1,7 @@
 
-# Telent Utility
+# Telnet Utility
 
-Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Telenet GitHub repository. The goal of this repository is to provide you with a powerful telnet utility that can be used to profile a TCP/IP service.
+Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Telnet GitHub repository. The goal of this repository is to provide you with a powerful telnet utility that can be used to profile a TCP/IP service.
 
 ## Usage Details
 
