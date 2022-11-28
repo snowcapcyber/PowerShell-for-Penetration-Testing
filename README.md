@@ -176,6 +176,8 @@ The trick when creating and using tools for Penetration Testing is not to reinve
 
 * [The NetCmdlets Module](https://cdn.nsoftware.com/help/NCF/cmd/default.htm)
 
+* [PowerCat](https://github.com/secabstraction/PowerCat)
+
 It should be noted that many of the tools listed above will be detected, and classified as malicious software, by many anti-virus products. However, from a tools and techniques perspective they are useful and add value to out tool set. A Penetration Test begins with us profiling what is on a network. To achieve this we use a technique called an ARP scan. To achieve this we can make use of Get-NetNeighbor cmdlet.
 ```powershell
 PS C:\> Get-NetNeighbor -AddressFamily IPv4
@@ -269,6 +271,13 @@ foreach ($HOSTLINE in $HOSTFILE)
 }
 ```
 
+We can use the [PowerCat PowerShell](https://github.com/secabstraction/PowerCat) application to perform port scanning. [PowerCat](https://github.com/secabstraction/PowerCat) gives is the ability to perform simple TCP port scanning. In the following we are going to scan all TCP ports in the range 1.1024 on the machine server01.snowcaocyber.co.uk
+
+
+```powershell
+PS C:\> 1..1024 | ForEach-Object { Connect-PowerCat -RemoteIp server01.snowcaocyber.co.uk -Port $_ -Timeout 1 -Verbose -Disconnect }
+```
+
 We can also perform UDP port scanning via the application NetCmdlets Module. First we need to install the NetCmdlets module.
 
 ```powershell
@@ -280,6 +289,13 @@ The Send-UDP cmdlet will bind to a specific local host address and send UDP data
 ```powershell
 PS C:\> send-udp -server udpserver.snowcapcyber.co.uk -port 4444 -data "test from netcmdlets"
 ```
+
+We cab also use the [PowerCat](https://github.com/secabstraction/PowerCat) tool to perform UDP port scanning. In the following we are going to perform a UDP port scan against the target system server01.snowcapcyber.co.uk for all ports in the range 1..1024.
+
+
+```powershell
+PS C:\> 1..1024 | ForEach-Object { Connect-PowerCat -Mode Udp -RemoteIp server01.snowcapcyber.co.uk -Port $_ -Timeout 1 -Verbose }
+```    
 
 ## Chapter 4 - Banner Grabbing and OS Fingerprinting
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running and a target host operating system. To identify the operating of the local computer system we will use a WMI object as follows:
