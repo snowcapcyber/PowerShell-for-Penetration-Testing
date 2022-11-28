@@ -1,4 +1,4 @@
-functionality# PowerShell for Penetration Testing
+Utility'sfunctionality# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -294,7 +294,7 @@ PS C:\> (Get-WmiObject Win32_OperatingSystem -ComputerName dc-01.snowcapcyber.co
 Microsoft Windows Server 2012 Standard
 ```
 
-When using the HHH object to connect to a target system we may receive the error message “Get-WmiObject : Access is denied“. This error message is telling us that we need to make use of a set admin user credentials to access the resource. In the following PowerShell we make use of the Get-Credential object to create a set of credentials and then pass them to the Get-WmiObject object.
+When using the Get-WmiObject object to connect to a target system we may receive the error message “Get-WmiObject : Access is denied“. This error message is telling us that we need to make use of a set admin user credentials to access the resource. In the following PowerShell we make use of the Get-Credential object to create a set of credentials and then pass them to the Get-WmiObject object.
 
 ```powershell
 PS C:\> $PSCredential = Get-Credential "dc-02.nowcapcyber.co.uk\administrator"
@@ -302,7 +302,7 @@ PS C:\> Get-WmiObject Win32_OperatingSystem -ComputerName dc-02.snowcapcyber.co.
 Microsoft Windows Server 2016 Standard
 ```
 
-The goal of the following PowerShell tool is to connect to a TCP port on a target machine and then to read the data from the port.
+The goal of the following [Banner Grabbing](https://github.com/snowcapcyber/PowerShell-for-Penetration-Testing/tree/main/PowerBanner)PowerShell tool is to connect to a TCP port on a target machine and then to read the data from the port.
 
 ```powershell
 PS C:\> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
@@ -310,7 +310,7 @@ PS C:\> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
 220 Service ready for new user
 ```
 
-With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functionality of the following PowerShell is akin to that of the Telnet utility.
+With some TCP servers we may wish to interact directly. So the following [Telnet Utility[(https://github.com/snowcapcyber/PowerShell-for-Penetration-Testing/tree/main/PowerTelnet) allow is to specify and what machines we wish to talk to and on what ports. The functionality of the following PowerShell is akin to that of the Telnet utility.
 
 ```powershell
 PS C:\> ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.co.uk -Port 80
