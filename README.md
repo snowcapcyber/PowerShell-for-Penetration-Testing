@@ -305,7 +305,7 @@ Microsoft Windows Server 2016 Standard
 The goal of the following PowerShell tool is to connect to a TCP port on a target machine and then to read the data from the port.
 
 ```powershell
-> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
+PS C:\> ./PowerBanner.ps1 -ComputerName ftp.snowcapcyber.co.uk -Port 21
 220-Welcome To NEP Finland FTP service!
 220 Service ready for new user
 ```
@@ -313,7 +313,7 @@ The goal of the following PowerShell tool is to connect to a TCP port on a targe
 With some TCP servers we may wish to interact directly. So the following allow is to specify and what machines we wish to talk to and on what ports. The functiuoinality of the following PowerShell is akin to that of the Telnet utility.
 
 ```powershell
-PS > ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.com -Port 80
+PS C:\> ./PowerTelnet.ps1 -ComputerName www.snowcapcyber.co.uk -Port 80
 Creating a connection to: www.snowcapcyber.com  on TCP port:  80
 prompt>
 ```
