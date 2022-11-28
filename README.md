@@ -1,4 +1,4 @@
-Utility'sfunctionality# PowerShell for Penetration Testing
+receiveUtility'sfunctionality# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -45,7 +45,7 @@ MachinePolicy       Undefined
 PS C:\Program Files\PowerShell\7>
 ```
 
-As a scripting language PowerShall can be enabled or disabled on the local machine. To enable Powershell we can use the following command
+As a scripting language PowerShall can be enabled or disabled on the local machine. To enable PowerShell we can use the following command
 ```powershell
 PS C:\> Set-ExecutionPolicy Unrestricted
 ```
@@ -512,6 +512,12 @@ The [PowerCat](https://github.com/secabstraction/PowerCat) utilising allows to t
 ```powershell
 PS C:\> Import-Module ./PowerCat.psd1
 PS C:\> Connect-PowerCat -RemoteIp 10.12.148.14 -Port 80
+```
+
+We can also use [PowerCat](https://github.com/secabstraction/PowerCat)  to connect over SSL. For a web server using SSL it will typically use TCP port 443. PowerCat support the dynamic creation of certificates as follows. This will allow us to connect to an HTTP Server and send/receive HTTP requests.
+
+```powershell
+PS C:\> Connect-PowerCat -Mode Tcp -RemoteIp 10.12.148.14 -Port 443 -SslCn PowerCat
 ```
 
 ## Chapter 8 - Windows File Sharing (SMB)
