@@ -808,6 +808,12 @@ PS C:\>
 
 ## Chapter 11 - SQL Database
 
+On the Internet are there are basic type of SQL databases that we will want to examine as part of a Penitration test. 
+
+* [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/)
+* [MySQL](https://www.mysql.com/)
+* [PostgreSQL](https://www.postgresql.org/)
+
 ```powershell
 PS C:\> Execute-Command-MSSQL
 ```
