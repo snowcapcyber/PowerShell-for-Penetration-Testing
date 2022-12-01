@@ -1,4 +1,4 @@
-receiveUtility'sfunctionality# PowerShell for Penetration Testing
+# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
 
@@ -800,25 +800,13 @@ We can also use a distinguished name when clearing an account.
 PS C:\>  Clear-ADAccountExpiration -Identity "CN=John Smith,OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk"
 ```
 
-## Chapter 10 - Azure
-
-```powershell
-PS C:\>
-```
-
-## Chapter 11 - SQL Database
-
-On the Internet are there are basic type of SQL databases that we will want to examine as part of a Penitration test. 
-
-* [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/)
-* [MySQL](https://www.mysql.com/)
-* [PostgreSQL](https://www.postgresql.org/)
+## Chapter 10 - SQL Database
 
 ```powershell
 PS C:\> Execute-Command-MSSQL
 ```
 
-## Chapter 12 - Domain Name System (DNS)
+## Chapter 11 - Domain Name System (DNS)
 
 ```powershell
 PS C:\> Test-DNSRecord
@@ -828,13 +816,23 @@ PS C:\> Test-DNSRecord
 PS C:\> Resolve-DNSName
 ```
 
-## Chapter 13 - Simple Network Management Protocol (SNMP)
+## Chapter 12 - Simple Network Management Protocol (SNMP)
 
 ```powershell
 PS C:\>
 ```
 
-## Chapter 14 - Brute Forcing
+## Chapter 13 - Azure
+
+```powershell
+PS C:\>
+```
+## Chapter 14 - AWS
+
+```powershell
+PS C:\>
+```
+## Chapter 17 - Brute Forcing
 
 Once we have identified a series of TCP services that support authentication then we cab start to Brute force a connection to them. To do this we will make use of the following tools.
 
@@ -844,7 +842,7 @@ Once we have identified a series of TCP services that support authentication the
 PS C:\>
 ```
 
-## Chapter 15 - User Profiling
+## Chapter 16 - User Profiling
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
@@ -946,7 +944,7 @@ User        WIN11\Administrator  Local
 User        WIN11\jsmith         Local
 ```
 
-## Chapter 16 - Profiling Local/Remote Systems
+## Chapter 17 - Profiling Local/Remote Systems
 
 Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
 ```powershell
