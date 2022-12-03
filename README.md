@@ -874,17 +874,26 @@ There are a number of PowerShell modules that support SNMP. One such module is:
 
 * [Proxx.SNMP](https://github.com/Proxx/Proxx.SNMP)
 
+* [Patron.SNMP](https://github.com/patron-it/patron.SNMP)
+
 We can installl and explore this module as follows. This module supports two functions. The first function is to get an element of the SNMP tree and the second is the function to walk an SNMP tree.
 
 ```powershell
-PS C:\>  install-module -Name Proxx.SNMP
+PS C:\>  Install-Module -Name Proxx.SNMP
 
-PS C:\> get-command -module Proxx.SNMP
+PS C:\> Get-Command -module Proxx.SNMP
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
 Cmdlet          Invoke-SnmpGet                                     1.1.1.6    Proxx.SNMP
 Cmdlet          Invoke-SnmpWalk                                    1.1.1.6    Proxx.SNMP
+
+PS C:\> Get-Command -module Patron.SNMP
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Cmdlet          Invoke-SnmpGet                                     1.1.1.5    Patron.SNMP
+Cmdlet          Invoke-SnmpWalk                                    1.1.1.5    Patron.SNMP
 
 PS C:\>
 ```
