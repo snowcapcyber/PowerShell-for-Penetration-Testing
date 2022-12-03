@@ -862,7 +862,7 @@ SNMP ID                               SNMP Value                                
 interfaces.ifTable.ifEntry.ifDescr.1  Software Loopback Interface 1                                               1.3.6.1.2.1.2.2.1.2.1
 interfaces.ifTable.ifEntry.ifDescr.2  WAN Miniport (L2TP)                                                         1.3.6.1.2.1.2.2.1.2.2
 interfaces.ifTable.ifEntry.ifDescr.3  WAN Miniport (SSTP)                                                         1.3.6.1.2.1.2.2.1.2.3
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . . . . . . . . 
 interfaces.ifTable.ifEntry.ifDescr.9  WAN Miniport (Network Monitor)                                              1.3.6.1.2.1.2.2.1.2.9
 interfaces.ifTable.ifEntry.ifDescr.10 Microsoft Kernel Debug Network Adapter                                      1.3.6.1.2.1.2.2.1.2.10
 interfaces.ifTable.ifEntry.ifDescr.11 RAS Async Adapter                                                           1.3.6.1.2.1.2.2.1.2.11
