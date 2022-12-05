@@ -1206,6 +1206,19 @@ If you wish to change the PowerShell policy only to the current user, use the fo
 PS C:\>  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 ```
 
+One of the easiest way to profile a target system is with the 'Get-ComputerInfo' command.
+```powershell
+PS C:\> Get-ComputerInfo
+WindowsBuildLabEx                                       : 10240.17394.amd64fre.th1_st1.170427-1347
+WindowsCurrentVersion                                   : 6.3
+WindowsEditionId                                        : Professional
+WindowsInstallationType                                 : Client
+WindowsInstallDateFromRegistry                          : 18/05/2022 10:41:49
+WindowsProductId                                        : 00330-80187-80928-AA740
+WindowsProductName                                      : Windows 10 Pro
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```p
+
 Profiling a local system starts with is identifying how the device's device is configured. To achieve this we can make use of the JJ PowerShell cmdlet.
 ```powershell
 PS C:\> Get-NetIPConfiguration
