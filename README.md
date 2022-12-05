@@ -120,7 +120,7 @@ PS C:\> IEX(New-Object Net.WebClient).DownloadString('http://www.snowcapcyber.co
 PS C:\>
 ```
 
-## Chapter 3 - Aces sing a File System in PowerShell
+## Chapter 3 - Acessing a File System in PowerShell
 PowerShell also supports a set of functions that allow us to explore and manipulate a file system. The 'Get-ChildItem' cmdlet gets the items in one or more specified locations. You can think of it like the 'ls' command in UNIX, or the 'dir' command in Windows/MS-DOS. In the following we will list the contents of the 'C:\Test' directory.
 
 ```powershell
