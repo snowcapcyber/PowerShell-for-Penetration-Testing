@@ -1217,7 +1217,7 @@ WindowsInstallDateFromRegistry                          : 18/05/2022 10:41:49
 WindowsProductId                                        : 00330-80187-80928-AA740
 WindowsProductName                                      : Windows 10 Pro
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```p
+```
 
 Profiling a local system starts with is identifying how the device's device is configured. To achieve this we can make use of the JJ PowerShell cmdlet.
 ```powershell
