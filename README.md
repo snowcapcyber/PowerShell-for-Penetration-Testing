@@ -780,7 +780,7 @@ PS C:\> $creds = New-Object System.Net.NetworkCredential("ajcblyth", "MyPa55w0rd
 PS C:\> Invoke-Command -ComputerName 'dc01.snowcapcyber.com' -Credential $cred-ScriptBlock {Get-SmbShare}
 ```
 
-To query a domain about the users and computers located with a domain we can make use of the following. In the following we are doing to query the computer DC-01.snowcapcyber.co.uk and ask it to display information about the user 'Andrew Blyth'.
+To query a domain about the users and computers that are located within a domain, we can make use of the following. In the following we are doing to query the computer DC-01.snowcapcyber.co.uk and ask it to display information about the user 'Andrew Blyth'.
 
 ```powershell
 PS C:\> get-aduser 'Andrew Blyth' -Server DC-01.snowcapcyber.co.uk
