@@ -1077,21 +1077,57 @@ PS C:\>
 
 Azure testing can be broken down into the
 
-* Accessing Azure and Reconnaissance
+* Accessing Azure and Reconnaissance. This is concerned with gaining access to the Azure environment and starting to profile the Azure Tenancy.
 
-* Investigatng Networks and DNS
+* Investigatng Networks and DNS. This involved profiling the Azure infrastructure to identify what systems have been deployed and how the network infrastructure has been configured
 
-* Identifty Management and Role Based Access Control
+* Identifty Management and Role Based Access Control. This is concered with pofiling, and idnetoifying weakness, in the identifty management deployed within the Azure Tenancy
 
-* Examining Storage
+* Examining Storage. This focuses on the analysis, and vulnerability identification, of the Storage Structures used within a zure Tenancy.
 
-* Virtual Machines 
+* Virtual Machines. This focuses on the analysis, and vulnerability identification, of the Virtual Machines used within a zure Tenancy.
 
-* Azure and SQL
+* Azure and SQL. This is concerned with the identify and profiling of the types of SQL systems used withing the zure Tenancy.
 
-* Key Vaults 
+* Azure Key Vaults. This is examinging how the keys vaults used to store passwords for Azure have been configured.
 
 ### Accessing Azure and Reconnaissance
+
+```powershell
+PS C:\>
+```
+
+### Investigatng Networks and DNS
+
+```powershell
+PS C:\>
+```
+
+### Identifty Management and Role Based Access Control
+
+```powershell
+PS C:\>
+```
+
+### Examining Storage
+
+```powershell
+PS C:\>
+```
+
+### Virtual Machines 
+
+```powershell
+PS C:\>
+```
+
+### Azure and SQL
+
+```powershell
+PS C:\>
+```
+
+### Azure and Keyvaults
 
 ```powershell
 PS C:\>
