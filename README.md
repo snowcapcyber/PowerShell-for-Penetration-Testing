@@ -1075,7 +1075,7 @@ PS C:\>
 
 ## Chapter 15 - Azure
 
-Azure testing can be broken down into the
+Azure is the Microsoft Cloud Computing Platform. Azure is built around teh cocnepts of identity management and role based access control. Within in azure we have a set of resources of various types that we can control. At the heart of Azure is the Azure Active Directory. This is used to perform identifty managemewnt. Azure testing can be broken down into the
 
 * Accessing Azure and Reconnaissance. This is concerned with gaining access to the Azure environment and starting to profile the Azure Tenancy.
 
