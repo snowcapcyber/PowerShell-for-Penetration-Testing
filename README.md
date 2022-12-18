@@ -1075,9 +1075,33 @@ PS C:\>
 
 ## Chapter 15 - Azure
 
+Azure testing can be broken down into the
+
+* Accessing Azure and Reconnaissance
+
+* Investigatng Networks and DNS
+
+* Identifty Management and Role Based Access Control
+
+* Examining Storage
+
+* Virtual Machines 
+
+* Azure and SQL
+
+* Key Vaults 
+
+### Accessing Azure and Reconnaissance
+
 ```powershell
 PS C:\>
 ```
+
+The following is a list of userful reference materials:
+
+* [Penetration Testing Azzure for Ethical Hackers, David Okeyode and Karl Fosaaen, Packt, 2021](https://www.amazon.co.uk/Penetration-Testing-Azure-Ethical-Hackers/dp/1839212934/ref=sr_1_2?crid=XXX7WL068QZS&keywords=Pentesting+Azure+Applications&qid=1671399210&s=digital-text&sprefix=pentesting+azure+applications%2Cdigital-text%2C56&sr=1-2-catcorr)
+
+* [Pentesting Azure Applications, Matt Burrough, No Starch Press, 2018](https://www.amazon.co.uk/Pentesting-Azure-Definitive-Attack-Defense/dp/1593278632/ref=sr_1_1?crid=XXX7WL068QZS&keywords=Pentesting+Azure+Applications&qid=1671399210&s=digital-text&sprefix=pentesting+azure+applications%2Cdigital-text%2C56&sr=1-1-catcorr)
 
 ## Chapter 16 - AWS
 
