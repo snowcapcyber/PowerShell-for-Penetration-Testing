@@ -1095,7 +1095,7 @@ To start testing Azure with power shell we first need to load the required modul
 
 ```powershell
 PS C:\> Install-Module -Name Azure
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 PS C:\> Import-Module Azure
 ```
 
