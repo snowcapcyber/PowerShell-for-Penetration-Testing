@@ -1094,9 +1094,19 @@ Azure is the Microsoft Cloud Computing Platform. Azure is built around teh cocne
 To start testing Azure with power shell we first need to load the required modules into powetshell. We can do this as follows:
 
 ```powershell
-PS C:\> Install-Module -Name Azure
+PS C:\> Install-Module -Name Az 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-PS C:\> Import-Module Azure
+PS C:\> Import-Module Az 
+```
+
+All Azure testing begins with authentication to access the tennent. To do this we use the 'Connect-AzAccount' command.
+
+```powershell
+PS C:\> Connect-AzAccount
+
+Account                      SubscriptionName   TennantID                              Environment
+-------                      ----------------   ------------------------------------   -----------
+ajcblyth@snowcapcyber.com    Infinity           749a36a1-402a-481c-a0c0-66f677504ea8   AzureCloud
 ```
 
 ### Accessing Azure and Reconnaissance
