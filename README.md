@@ -1141,6 +1141,19 @@ Address: 52.239.123.45
 
 From the analysis of the DNS names we can identify the type of service.
 
+| DNS Suffix                 | Associated Azure Service                                          |
+| -------------------------- | ----------------------------------------------------------------- |
+| file.core.windows.net      | Storage Accounts - Files                                          | 
+| blob.core.windows.net      | Storage Accounts - Blobs                                          | 
+| azurewebsites.net          | App Service and Functions App                                     | 
+| scm.azurewebsites.net      | App Services - Management                                         | 
+| database.windows.net       | Databases - MSSQL                                                 | 
+| documents.azure.com        | Databases - Cosmos DB                                             | 
+| cloudapp.azure.com         | Customer - Assigned Public IP DNS                                 | 
+| vault.azure.net            | Key Vault                                                         | 
+| azurecontainer.io          | Container Instances                                               | 
+| azurecr.io                 | Container Registry                                                | 
+
 ### Investigatng Networks and DNS
 
 ```powershell
