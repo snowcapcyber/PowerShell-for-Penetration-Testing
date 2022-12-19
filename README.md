@@ -1109,11 +1109,37 @@ Account                      SubscriptionName   TennantID                       
 ajcblyth@snowcapcyber.com    Infinity           749a36a1-402a-481c-a0c0-66f677504ea8   AzureCloud
 ```
 
+Once we have access to a Micorosft Azure Tennancy we =can start to perform the penitration test.
+
 ### Accessing Azure and Reconnaissance
 
+The penitration test start with us performing Reconnaissance and identifying the publish addressable IP address. We can get a list if public IP address via the 'AzPublicIpAddress' command. In the following we will filter the output to identify the Name, IP Address and Allocation Method.
+
 ```powershell
-PS C:\>
+PS C:\> Get-AzPublicIpAddress | select Name, IpAddress, PublicIpAllocationMethod
+
+Name                                            IpAddress          PublicIpAllocationMethod
+----                                            ---------          ------------------------
+pip-fw-main-cardiff                             13.79.123.234      Static
+devtest-a0c181928fdc819546afcb1726af010f        20.13.210.215      Static
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 ```
+
+Once we have a public ipaddress and name we can start to use use nslookup up explore the tye of DNS services
+
+```powershell
+PS C:\> nslookup devtest.snowcapcyber.com
+Server:		192.168.1.254
+Address:	192.168.1.254#53
+
+Non-authoritative answer:
+devtest.snowcapcyber.com	canonical name = snowcapcyber.z13.web.core.windows.net.
+snowcapcyber.z16.web.core.windows.net	canonical name = web.s768fd45.store.core.windows.net.
+Name:	web.s768fd45.store.core.windows.net
+Address: 52.239.123.45
+```
+
+From the analysis of the DNS names we can identify the type of service.
 
 ### Investigatng Networks and DNS
 
