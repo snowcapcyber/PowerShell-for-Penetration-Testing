@@ -1091,6 +1091,12 @@ Azure is the Microsoft Cloud Computing Platform. Azure is built around teh cocne
 
 * Azure Key Vaults. This is examinging how the keys vaults used to store passwords for Azure have been configured.
 
+To start testing Azure with power shell we first need to load the required modules into powetshell. We can do this as follows:
+
+```powershell
+PS C:\> Install-Module -Name Azure
+```
+
 ### Accessing Azure and Reconnaissance
 
 ```powershell
