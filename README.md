@@ -1174,18 +1174,33 @@ PS C:\>
 
 ### Virtual Machines 
 
-The basic method that Azure uses to develer a service is that of a Virtual Machine. We can query an Azure Tenancy to identify all associated VM machines. Using the 'get-azvm' command we can get a list of all VM mahiines associated with the tenancy.
+The basic method that Azure uses to develer a service is that of a Virtual Machine. We can query an Azure Tenancy to identify all associated VM machines. Using the 'Get-AzVM' command we can get a list of all VM mahiines associated with the tenancy.
 
 ```powershell
-PS C:\> get-azvm
+PS C:\> Get-AzVM
 
 ResourceGroupName                  Name Location            VmSize  OsType        NIC           ProvisioningState
 -----------------                  ---- --------            ------  ------        ---           -----------------
 SNOWCAPCLOUD                 SNOWUNIX01  UKWales   Standard_D8s_v3   Linux        SNOWUNIX01268         Succeeded
 SNOWWINCLOUD                  SNOWWIN01  UKWales   Standard_D8s_v3 Windows        SNOWWIN01789          Succeeded
-SNOWWINCLOUD                  SNOWWIN02  UKWales   Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
+SNOWWINCLOUD                  SNOWWIN02  UKYork    Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
 ```
 
+We can use the 'Get-AzVM' command we query the virtual machines by name and by location as follows.
+
+```powershell
+PS C:\> Get-AzVM -Name *UNIX*
+ 
+ResourceGroupName                  Name Location            VmSize  OsType        NIC           ProvisioningState
+-----------------                  ---- --------            ------  ------        ---           -----------------
+SNOWCAPCLOUD                 SNOWUNIX01  UKWales   Standard_D8s_v3   Linux        SNOWUNIX01268         Succeeded
+
+PS C:\> Get-AzVM -Location "UKYork"
+
+ResourceGroupName                  Name Location            VmSize  OsType        NIC           ProvisioningState
+-----------------                  ---- --------            ------  ------        ---           -----------------
+SNOWWINCLOUD                  SNOWWIN02  UKYork    Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
+```
 ### Azure and SQL
 
 ```powershell
