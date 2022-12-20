@@ -1179,11 +1179,11 @@ The basic method that Azure uses to develer a service is that of a Virtual Machi
 ```powershell
 PS C:\> get-azvm
 
-ResourceGroupName                      Name Location            VmSize  OsType        NIC           ProvisioningState
------------------                      ---- --------            ------  ------        ---           -----------------
-SNOWCAPCLOUD                     SNOWUNIX01  UKWales   Standard_D8s_v3   Linux        SNOWUNIX01268         Succeeded
-SNOWWINCLOUD                      SNOWWIN01  UKWales   Standard_D8s_v3 Windows        SNOWWIN01789          Succeeded
-SNOWWINCLOUD                      SNOWWIN02  UKWales   Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
+ResourceGroupName                  Name Location            VmSize  OsType        NIC           ProvisioningState
+-----------------                  ---- --------            ------  ------        ---           -----------------
+SNOWCAPCLOUD                 SNOWUNIX01  UKWales   Standard_D8s_v3   Linux        SNOWUNIX01268         Succeeded
+SNOWWINCLOUD                  SNOWWIN01  UKWales   Standard_D8s_v3 Windows        SNOWWIN01789          Succeeded
+SNOWWINCLOUD                  SNOWWIN02  UKWales   Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
 ```
 
 ### Azure and SQL
