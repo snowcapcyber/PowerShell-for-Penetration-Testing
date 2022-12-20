@@ -1109,6 +1109,20 @@ Account                      SubscriptionName   TennantID                       
 ajcblyth@snowcapcyber.com    Infinity           749a36a1-402a-481c-a0c0-66f677504ea8   AzureCloud
 ```
 
+Once we have connected to an Azure Tenancy we can query the tenancy to ensure that it is correct.
+
+749a36a1-402a-481c-a0c0-66f677504ea8 
+
+```powershell
+PS C:\> Get-AzTenant
+
+Id                                   Name              Category Domains
+--                                   ----              -------- -------
+749a36a1-402a-481c-a0c0-66f677504ea8 SnowCap Cyber     Home     {snowcapcyber.onmicrosoft.com, snowcapcyber.com}
+
+PS C:\>
+```
+
 Once we have access to a Micorosft Azure Tennancy we =can start to perform the penitration test.
 
 ### Accessing Azure and Reconnaissance
