@@ -1116,9 +1116,9 @@ Once we have connected to an Azure Tenancy we can query the tenancy to ensure th
 ```powershell
 PS C:\> Get-AzTenant
 
-Id                                   Name              Category Domains
---                                   ----              -------- -------
-749a36a1-402a-481c-a0c0-66f677504ea8 SnowCap Cyber     Home     {snowcapcyber.onmicrosoft.com, snowcapcyber.com}
+Id                                       Name              Category Domains
+--                                       ----              -------- -------
+749a36a1-402a-481c-a0c0-66f677504ea8     SnowCap Cyber     Home     {snowcapcyber.onmicrosoft.com, snowcapcyber.com}
 
 PS C:\>
 ```
