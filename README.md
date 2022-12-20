@@ -1201,6 +1201,19 @@ ResourceGroupName                  Name Location            VmSize  OsType      
 -----------------                  ---- --------            ------  ------        ---           -----------------
 SNOWWINCLOUD                  SNOWWIN02  UKYork    Standard_D8s_v3 Windows        SNOWWIN02906          Succeeded
 ```
+
+Once we know the names of all the virtal machines within a tenancy then we can query the tency and extract the Public IP address for a Virtual Machine. We achieve this as follows. Then once we have identify all public IP address asscoaited with a tenacy we can start to attack/probe these IP addresses.
+
+```powershell
+PS C:\> Get-azpublicipaddress -Name SNOWUNIX01 | select IpAddress
+
+IpAddress
+---------
+137.135.55.253
+
+PS C:\> 
+```
+
 ### Azure and SQL
 
 ```powershell
