@@ -1216,6 +1216,8 @@ IpAddress
 PS C:\> 
 ```
 
+Once we have identified the IP addresses that we can use to access Micorossft Azure we can start to make use of the various features that it provides.
+
 ### Data Storage and Blobs
 
 ```powershell
