@@ -1174,18 +1174,6 @@ From the analysis of the DNS names we can identify the type of service.
 PS C:\>
 ```
 
-### Identifty Management and Role Based Access Control
-
-```powershell
-PS C:\>
-```
-
-### Examining Storage
-
-```powershell
-PS C:\>
-```
-
 ### Virtual Machines 
 
 The basic method that Azure uses to develer a service is that of a Virtual Machine. We can query an Azure Tenancy to identify all associated VM machines. Using the 'Get-AzVM' command we can get a list of all VM mahiines associated with the tenancy.
@@ -1226,6 +1214,24 @@ IpAddress
 137.135.55.253
 
 PS C:\> 
+```
+
+### Data Storage and Blobs
+
+```powershell
+PS C:\>
+```
+
+### Identifty Management and Role Based Access Control
+
+```powershell
+PS C:\>
+```
+
+### Azure Permissions
+
+```powershell
+PS C:\>
 ```
 
 ### Azure and SQL
